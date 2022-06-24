@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Creates a mongoose schema for products
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -66,4 +67,5 @@ const productSchema = new mongoose.Schema({
   },
 });
 
+// Export default mongoose model for products
 export default new mongoose.model("Product", productSchema);

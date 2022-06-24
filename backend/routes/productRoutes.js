@@ -15,6 +15,8 @@ router.route("/products").get(getAllProducts);
 // Create a new product.
 router.route("/product/new").post(createProduct);
 
+//Note: You can also do route.route(...).get(...).delete(...).put(...) for same route
+
 //Update a product
 router.route("/product/:id").put(updateProduct);
 

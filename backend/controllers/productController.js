@@ -43,9 +43,19 @@ export const updateProduct = async (req, res) => {
   });
 };
 
-// Delete a product.
+// Delete/Remove a product.
 export const deleteProduct = async (req, res) => {
-  await Product.findOneAndDelete(req.params.id);
+  const product = await Product.findById(req.params.id);
+  // Returns 404 if product is not found
+  if (!product) {
+    return res.status(404).json({
+      success: false,
+      message: "Product not found",
+    });
+  }
+
+  await product.remove();
+
   res.status(200).json({
     success: true,
     message: "Product deleted successfully",

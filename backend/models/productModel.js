@@ -38,7 +38,7 @@ const productSchema = new mongoose.Schema({
   },
   stock: {
     type: Number,
-    required: [true, "Please Enter a stock of the product"],
+    default: 0,
     maxLength: [4, "Please Enter a maximum stock of 4 numbers"],
   },
   numOfReviews: {
@@ -49,15 +49,12 @@ const productSchema = new mongoose.Schema({
     {
       name: {
         type: String,
-        required: true,
       },
       rating: {
         type: Number,
-        required: true,
       },
       review: {
         type: String,
-        required: true,
       },
     },
   ],
@@ -68,4 +65,4 @@ const productSchema = new mongoose.Schema({
 });
 
 // Export default mongoose model for products
-export default new mongoose.model("Product", productSchema);
+export default mongoose.model("Product", productSchema);

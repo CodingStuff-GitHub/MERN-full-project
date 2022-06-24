@@ -33,7 +33,6 @@ export const updateProduct = async (req, res) => {
   product = await Product.findOneAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
-    useFindAndModify: false,
   });
 
   // Returns 200 if product is updated
@@ -41,5 +40,23 @@ export const updateProduct = async (req, res) => {
     success: true,
     message: "Product updated successfully",
     product,
+  });
+};
+
+// Delete a product.
+export const deleteProduct = async (req, res) => {
+  await Product.findOneAndDelete(req.params.id);
+  res.status(200).json({
+    success: true,
+    message: "Product deleted successfully",
+  });
+};
+
+// Get single product by id.
+export const getSingleProduct = async (req, res) => {
+  const singleProduct = await Product.findById(req.params.id);
+  res.status(200).json({
+    success: true,
+    singleProduct,
   });
 };

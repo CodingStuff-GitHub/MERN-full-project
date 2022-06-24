@@ -3,6 +3,8 @@ import {
   getAllProducts,
   createProduct,
   updateProduct,
+  deleteProduct,
+  getSingleProduct,
 } from "../controllers/productController.js";
 
 export const router = express.Router();
@@ -15,3 +17,9 @@ router.route("/product/new").post(createProduct);
 
 //Update a product
 router.route("/product/:id").put(updateProduct);
+
+// Delete a product
+router.route("/product/:id").delete(deleteProduct);
+
+// Get a single product
+router.route("/product/:id").get(getSingleProduct);

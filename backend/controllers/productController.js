@@ -1,5 +1,6 @@
 import AsyncPromiseError from "../middleware/asyncPromiseError.js";
 import Product from "../models/productModel.js";
+import { ApiFeatures } from "../utils/apiFeatures.js";
 import { ErrorHandler } from "../utils/errorHandler.js";
 
 // Create a new product
@@ -13,8 +14,12 @@ export const createProduct = AsyncPromiseError(async (req, res) => {
 });
 
 // Get all products
-export const getAllProducts = AsyncPromiseError(async (_req, res) => {
-  const products = await Product.find();
+export const getAllProducts = AsyncPromiseError(async (req, res) => {
+  const apiFeatures = new ApiFeatures(
+    Product.find(),
+    req.query.keyword
+  ).search();
+  const products = await apiFeatures.queryFunction;
   res.status(200).json({
     success: true,
     products,

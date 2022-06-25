@@ -2,6 +2,13 @@ import app from "./app.js";
 import dotenv from "dotenv";
 import connectDatabase from "./config/databaseConnection.js";
 
+// Uncaught Expection Handling
+process.on("uncaughtException", (err) => {
+  console.log(`Error : ${err}`);
+  console.log("Shutting Down the server due to uncaughtException");
+  process.exit(1);
+});
+
 // config. env
 dotenv.config({ path: "backend/config/config.env" });
 
@@ -16,7 +23,7 @@ const server = app.listen(process.env.PORT, () => {
 //Unhandled Promise rejection
 process.on("unhandledRejection", (err) => {
   console.log(`Error : ${err}`);
-  console.log("Shutting down the server...");
+  console.log("Shutting down the server due to unhandledRejection");
   // Closes the server and exits the process.
   server.close(() => {
     process.exit(1);

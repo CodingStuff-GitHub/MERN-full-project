@@ -22,7 +22,7 @@ export const getAllProducts = AsyncPromiseError(async (_req, res) => {
 });
 
 // Update a product
-export const updateProduct = AsyncPromiseError(async (req, res) => {
+export const updateProduct = AsyncPromiseError(async (req, res, next) => {
   let product = await Product.findById(req.params.id);
   // Returns 404 if product is not found
   if (!product) {
@@ -43,7 +43,7 @@ export const updateProduct = AsyncPromiseError(async (req, res) => {
 });
 
 // Delete/Remove a product.
-export const deleteProduct = AsyncPromiseError(async (req, res) => {
+export const deleteProduct = AsyncPromiseError(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
   // Returns 404 if product is not found
   if (!product) {

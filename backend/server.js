@@ -9,10 +9,8 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-// config. env
 dotenv.config({ path: "backend/config/config.env" });
 
-// Connects to the database.
 connectDatabase();
 
 // Starts the server on the given port.

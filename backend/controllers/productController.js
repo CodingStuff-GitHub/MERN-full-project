@@ -12,15 +12,30 @@ export const createProduct = AsyncPromiseError(async (req, res) => {
     product,
   });
 });
+// Get single product by id.
+export const getSingleProduct = AsyncPromiseError(async (req, res, next) => {
+  const singleProduct = await Product.findById(req.params.id);
+  if (!singleProduct) {
+    return next(new ErrorHandler("Product Not Found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    singleProduct,
+  });
+});
 
 // Get all products
 export const getAllProducts = AsyncPromiseError(async (req, res) => {
+  const productCount = await Product.countDocuments();
+  const resultsPerPage = 2;
   const apiFeatures = new ApiFeatures(Product.find(), req.query)
     .search()
-    .filter();
+    .filter()
+    .pagination(resultsPerPage);
   const products = await apiFeatures.queryFunction;
   res.status(200).json({
     success: true,
+    productCount,
     products,
   });
 });
@@ -59,17 +74,5 @@ export const deleteProduct = AsyncPromiseError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Product deleted successfully",
-  });
-});
-
-// Get single product by id.
-export const getSingleProduct = AsyncPromiseError(async (req, res, next) => {
-  const singleProduct = await Product.findById(req.params.id);
-  if (!singleProduct) {
-    return next(new ErrorHandler("Product Not Found", 404));
-  }
-  res.status(200).json({
-    success: true,
-    singleProduct,
   });
 });

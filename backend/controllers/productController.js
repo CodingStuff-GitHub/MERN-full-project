@@ -15,10 +15,9 @@ export const createProduct = AsyncPromiseError(async (req, res) => {
 
 // Get all products
 export const getAllProducts = AsyncPromiseError(async (req, res) => {
-  const apiFeatures = new ApiFeatures(
-    Product.find(),
-    req.query.keyword
-  ).search();
+  const apiFeatures = new ApiFeatures(Product.find(), req.query)
+    .search()
+    .filter();
   const products = await apiFeatures.queryFunction;
   res.status(200).json({
     success: true,

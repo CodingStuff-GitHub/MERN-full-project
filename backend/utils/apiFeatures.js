@@ -31,6 +31,18 @@ export class ApiFeatures {
     const filteringTerms = { ...this.queryFunctionParam };
     const removeFields = ["keyword", "page", "limit"];
     removeFields.forEach((key) => delete filteringTerms[key]);
+
+    if (this.queryFunctionParam.price) {
+      // Adding $ infront of operators in price
+      const altObj = Object.fromEntries(
+        Object.entries(filteringTerms.price).map(([key, value]) => [
+          `$${key}`,
+          value,
+        ])
+      );
+      filteringTerms.price = altObj;
+    }
+    console.log(filteringTerms);
     this.queryFunction = this.queryFunction.find(filteringTerms);
     return this;
   }

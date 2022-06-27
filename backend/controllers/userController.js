@@ -12,8 +12,11 @@ export const registerUser = asyncPromiseError(async (req, res, next) => {
       url: "Sample_URL",
     },
   });
+
+  const token = user.getJWTToken();
+
   res.status(200).json({
     success: true,
-    user,
+    token,
   });
 });

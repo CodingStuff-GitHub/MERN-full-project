@@ -7,7 +7,10 @@ export const registerUser = asyncPromiseError(async (req, res, next) => {
     name: name,
     email: email,
     password: password,
-    avatar: { public_id: "Sample_ID", url: "Sample_URL" },
+    avatar: {
+      public_id: "Sample_ID",
+      url: "Sample_URL",
+    },
   });
   res.status(200).json({
     success: true,

@@ -6,11 +6,12 @@ import {
   deleteProduct,
   getSingleProduct,
 } from "../controllers/productController.js";
+import { isAuthenticated } from "../middleware/auth.js";
 
 export const router = express.Router();
 
 // Returns a list of all products
-router.route("/products").get(getAllProducts);
+router.route("/products").get(isAuthenticated, getAllProducts);
 
 // Create a new product.
 router.route("/product/new").post(createProduct);

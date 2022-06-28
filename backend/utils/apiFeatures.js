@@ -27,7 +27,7 @@ export class ApiFeatures {
 
   // Filters out elements that are not in the filter list.
   filter() {
-    //We are making a dict to put in find function of Mongodb to get those ones only
+    //We are making a dict to put in find function of Mongodb to get those only
     const filteringTerms = { ...this.queryFunctionParam };
     const removeFields = ["keyword", "page", "limit"];
     removeFields.forEach((key) => delete filteringTerms[key]);
@@ -36,13 +36,12 @@ export class ApiFeatures {
     const fieldsWithOperators = ["price", "rating"];
     fieldsWithOperators.forEach((key) => {
       if (filteringTerms[key]) {
-        const altObj = Object.fromEntries(
-          Object.entries(filteringTerms[key]).map(([key, value]) => [
-            `$${key}`,
-            value,
-          ])
+        filteringTerms[key] = Object.fromEntries(
+            Object.entries(filteringTerms[key]).map(([key, value]) => [
+              `$${key}`,
+              value,
+            ])
         );
-        filteringTerms[key] = altObj;
       }
     });
 

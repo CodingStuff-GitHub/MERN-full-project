@@ -13,3 +13,14 @@ export const isAuthenticated = asyncPromiseError(async (req, _res, next) => {
   req.user = await User.findById(decodedData.id);
   next();
 });
+
+export const AuthorizedRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ErrorHandler(`The role '${req.user.role}' is not allowed.`, 403)
+      );
+    }
+    next();
+  };
+};

@@ -6,7 +6,7 @@ import {
   deleteProduct,
   getSingleProduct,
 } from "../controllers/productController.js";
-import { isAuthenticated } from "../middleware/auth.js";
+import { isAuthenticated, AuthorizedRoles } from "../middleware/auth.js";
 
 export const router = express.Router();
 
@@ -14,15 +14,21 @@ export const router = express.Router();
 router.route("/products").get(getAllProducts);
 
 // Create a new product.
-router.route("/product/new").post(isAuthenticated, createProduct);
+router
+  .route("/product/new")
+  .post(isAuthenticated, AuthorizedRoles("admin"), createProduct);
 
 //Note: You can also do route.route(...).get(...).delete(...).put(...) for same route
 
 //Update a product
-router.route("/product/:id").put(isAuthenticated, updateProduct);
+router
+  .route("/product/:id")
+  .put(isAuthenticated, AuthorizedRoles("admin"), updateProduct);
 
 // Delete a product
-router.route("/product/:id").delete(isAuthenticated, deleteProduct);
+router
+  .route("/product/:id")
+  .delete(isAuthenticated, AuthorizedRoles("admin"), deleteProduct);
 
 // Get a single product
 router.route("/product/:id").get(getSingleProduct);

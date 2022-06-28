@@ -5,6 +5,7 @@ import { ErrorHandler } from "../utils/errorHandler.js";
 
 // Create a new product
 export const createProduct = AsyncPromiseError(async (req, res) => {
+  req.body.user = req.user.id;
   const product = await Product.create(req.body);
   res.status(201).json({
     success: true,

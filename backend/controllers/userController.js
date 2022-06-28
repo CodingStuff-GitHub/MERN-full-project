@@ -1,6 +1,7 @@
 import asyncPromiseError from "../middleware/asyncPromiseError.js";
 import User from "../models/userModel.js";
 import { ErrorHandler } from "../utils/errorHandler.js";
+import { jwtCookie } from "../utils/JWTcookie.js";
 
 export const registerUser = asyncPromiseError(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -13,13 +14,7 @@ export const registerUser = asyncPromiseError(async (req, res, next) => {
       url: "Sample_URL",
     },
   });
-
-  const token = user.getJWTToken();
-
-  res.status(200).json({
-    success: true,
-    token,
-  });
+  jwtCookie(user, 201, res);
 });
 
 export const loginUser = asyncPromiseError(async (req, res, next) => {
@@ -34,16 +29,11 @@ export const loginUser = asyncPromiseError(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Email or Password", 401));
   }
 
-  const isPasswordMatch = user.comparePassword(password);
+  const isPasswordMatch = await user.comparePassword(password);
 
   if (!isPasswordMatch) {
     return next(new ErrorHandler("Invalid Email or Password", 401));
   }
 
-  const token = user.getJWTToken();
-
-  res.status(200).json({
-    success: true,
-    token,
-  });
+  jwtCookie(user, 200, res);
 });

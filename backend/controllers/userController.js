@@ -3,7 +3,8 @@ import User from "../models/userModel.js";
 import { ErrorHandler } from "../utils/errorHandler.js";
 import { jwtCookie } from "../utils/JWTcookie.js";
 
-export const registerUser = asyncPromiseError(async (req, res, next) => {
+// Register a user
+export const registerUser = asyncPromiseError(async (req, res, _next) => {
   const { name, email, password } = req.body;
   const user = await User.create({
     name: name,
@@ -17,6 +18,7 @@ export const registerUser = asyncPromiseError(async (req, res, next) => {
   jwtCookie(user, 201, res);
 });
 
+// Logs in a user
 export const loginUser = asyncPromiseError(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -36,4 +38,16 @@ export const loginUser = asyncPromiseError(async (req, res, next) => {
   }
 
   jwtCookie(user, 200, res);
+});
+
+// Logs out a user
+export const logoutUser = asyncPromiseError(async (req, res, _next) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
 });

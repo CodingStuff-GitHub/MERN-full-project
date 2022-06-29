@@ -10,6 +10,21 @@ export default (err, _req, res, _next) => {
     //400 for bad request
     err = new ErrorHandler(err.message, 400);
   }
+  //Duplicate Key Error
+  if (err.code === 11000) {
+    err.message = `Duplicate. Invalid : ${Object.keys(err.keyValue)}`;
+    err = new ErrorHandler(err.message, 400);
+  }
+  //JWT error handling
+  if (err.code === "JsonWebTokenError") {
+    err.message = "JWT is Invalid, Please try again.";
+    err = new ErrorHandler(err.message, 400);
+  }
+  //JWT expired error handling
+  if (err.code === "TokenExpiredError") {
+    err.message = "JWT is expired, Please try again.";
+    err = new ErrorHandler(err.message, 400);
+  }
 
   return res.status(err.statusCode).json({
     success: false,

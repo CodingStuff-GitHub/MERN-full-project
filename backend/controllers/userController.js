@@ -110,9 +110,30 @@ export const resetPassword = asyncPromiseError(async (req, res, next) => {
   return res.redirect("/login");
 });
 
+// Get user details.
 export const getUserDetails = asyncPromiseError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     user: req.user,
   });
+});
+
+// Updates the user's password.
+export const updatePassword = asyncPromiseError(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password");
+  const isPasswordMatched = user.comparePassword(req.body.oldPassword);
+
+  // Returns an error if the old password is invalid.
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler("Invalid old password.", 400));
+  }
+
+  if (req.body.newPassword != req.body.confirmPassword) {
+    return next(new ErrorHandler("Password doesnot match.", 400));
+  }
+
+  user.password = req.body.newPassword;
+  await user.save();
+
+  jwtCookie(user, 200, res);
 });

@@ -6,6 +6,7 @@ import {
   forgotPassword,
   resetPassword,
   getUserDetails,
+  updatePassword,
 } from "../controllers/userController.js";
 
 import { isAuthenticated, AuthorizedRoles } from "../middleware/auth.js";
@@ -25,9 +26,14 @@ router.route("/logout").post(logoutUser);
 router.route("/password/forgot").post(forgotPassword);
 
 // Reset password
-router.route("/forgotPassword/reset/:token").put(resetPassword);
+router.route("/password/reset/:token").put(resetPassword);
 
 //Get User Details
 router
   .route("/profile")
   .get(isAuthenticated, AuthorizedRoles("admin", "user"), getUserDetails);
+
+//Update Password
+router
+  .route("/password/update")
+  .put(isAuthenticated, AuthorizedRoles("admin", "user"), updatePassword);

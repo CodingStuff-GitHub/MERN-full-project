@@ -109,3 +109,10 @@ export const resetPassword = asyncPromiseError(async (req, res, next) => {
   await user.save();
   return res.redirect("/login");
 });
+
+export const getUserDetails = asyncPromiseError(async (req, res, next) => {
+  res.status(200).json({
+    success: true,
+    user: req.user,
+  });
+});

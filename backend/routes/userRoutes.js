@@ -5,7 +5,10 @@ import {
   logoutUser,
   forgotPassword,
   resetPassword,
+  getUserDetails,
 } from "../controllers/userController.js";
+
+import { isAuthenticated, AuthorizedRoles } from "../middleware/auth.js";
 
 export const router = express.Router();
 
@@ -23,3 +26,8 @@ router.route("/password/forgot").post(forgotPassword);
 
 // Reset password
 router.route("/forgotPassword/reset/:token").put(resetPassword);
+
+//Get User Details
+router
+  .route("/profile")
+  .get(isAuthenticated, AuthorizedRoles("admin", "user"), getUserDetails);

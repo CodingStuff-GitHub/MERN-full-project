@@ -2,7 +2,7 @@ import asyncPromiseError from "../middleware/asyncPromiseError.js";
 import User from "../models/userModel.js";
 import { ErrorHandler } from "../utils/errorHandler.js";
 import { jwtCookie } from "../utils/JWTcookie.js";
-import { sendEmail } from "../utils/sendEmail.js";
+import crypto from "crypto";
 
 // Register a user
 export const registerUser = asyncPromiseError(async (req, res, _next) => {
@@ -54,7 +54,7 @@ export const logoutUser = asyncPromiseError(async (req, res, _next) => {
 });
 
 // Forgot password.
-export const forgotPassword = async (req, res, next) => {
+export const forgotPassword = asyncPromiseError(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
@@ -71,11 +71,6 @@ export const forgotPassword = async (req, res, next) => {
 
   const message = `Your reset password link is : - \n ${resetPasswordUrl}\n If you did not want to reset your password, ignore it`;
   try {
-    const emailSent = sendEmail({
-      email: user.email,
-      subject: "Reset Password Link",
-      message,
-    });
     res.status(200).json({
       success: true,
       message: `Email to ${user.email} send successfully`,
@@ -84,4 +79,33 @@ export const forgotPassword = async (req, res, next) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
   }
-};
+});
+
+// Resets the user's password.
+export const resetPassword = asyncPromiseError(async (req, res, next) => {
+  // Generates hash of reset token to compare with the database one
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+  //Search the user and it should not be expired
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new ErrorHandler("Reset Link is invalid or expired.", 400));
+  }
+
+  if (req.body.password != req.body.confirmPassword) {
+    return next(new ErrorHandler("Password does not match", 400));
+  }
+
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+  return res.redirect("/login");
+});

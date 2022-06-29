@@ -5,7 +5,6 @@ export const sendEmail = asyncPromiseError(async (options) => {
   const transporter = nodeMailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
-    service: process.env.SMTP_HOST,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASSWORD,
@@ -18,7 +17,5 @@ export const sendEmail = asyncPromiseError(async (options) => {
     subject: options.subject,
     text: options.message,
   };
-
   await transporter.sendMail(mailOptions);
-  return true;
 });

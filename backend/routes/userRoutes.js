@@ -7,6 +7,7 @@ import {
   resetPassword,
   getUserDetails,
   updatePassword,
+  updateProfile,
 } from "../controllers/userController.js";
 
 import { isAuthenticated, AuthorizedRoles } from "../middleware/auth.js";
@@ -37,3 +38,7 @@ router
 router
   .route("/password/update")
   .put(isAuthenticated, AuthorizedRoles("admin", "user"), updatePassword);
+
+router
+  .route("/profile/update")
+  .put(isAuthenticated, AuthorizedRoles("admin", "user"), updateProfile);

@@ -137,3 +137,17 @@ export const updatePassword = asyncPromiseError(async (req, res, next) => {
 
   jwtCookie(user, 200, res);
 });
+
+// Updates a user's profile
+export const updateProfile = asyncPromiseError(async (req, res, next) => {
+  // TODO: Add avatar
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData);
+  res.status(200).json({
+    success: true,
+    message: "Profile updated successfully",
+  });
+});

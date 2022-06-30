@@ -5,7 +5,7 @@ import { jwtCookie } from "../utils/JWTcookie.js";
 import crypto from "crypto";
 
 // Register a user
-export const registerUser = asyncPromiseError(async (req, res, _next) => {
+export const registerUser = asyncPromiseError(async (req, res, next) => {
   const { name, email, password } = req.body;
   const user = await User.create({
     name: name,
@@ -42,7 +42,7 @@ export const loginUser = asyncPromiseError(async (req, res, next) => {
 });
 
 // Logs out a user
-export const logoutUser = asyncPromiseError(async (req, res, _next) => {
+export const logoutUser = asyncPromiseError(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
     httpOnly: true,
@@ -149,5 +149,65 @@ export const updateProfile = asyncPromiseError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Profile updated successfully",
+  });
+});
+
+/**
+ * Admin Routes
+ */
+
+// Get all users.
+export const getAllUsers = asyncPromiseError(async (req, res, next) => {
+  const users = await User.find();
+  res.status(200).json({
+    success: true,
+    users,
+  });
+});
+
+// Get a single user by id
+export const getSingleUser = asyncPromiseError(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new ErrorHandler("User Not Found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+//Update Role of user
+export const updateRoleUser = asyncPromiseError(async (req, res, next) => {
+  const newData = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+
+  await User.findByIdAndUpdate(req.params.id, newData, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Role updated successfully",
+  });
+});
+
+// Deletes a user.
+export const deleteUser = asyncPromiseError(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return next(new ErrorHandler("User doesnot exist", 404));
+  }
+  // TODO: Remove avatar
+  await user.remove();
+  res.status(200).json({
+    success: true,
+    message: "User deleted successfully",
   });
 });

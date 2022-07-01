@@ -77,3 +77,98 @@ export const deleteProduct = AsyncPromiseError(async (req, res, next) => {
     message: "Product deleted successfully",
   });
 });
+
+// Create or Update a product review.
+export const createProductReview = AsyncPromiseError(async (req, res, next) => {
+  const { rating, comment, productid } = req.body;
+  const newReview = {
+    user: req.user.id,
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+  };
+
+  const product = await Product.findById(productid);
+
+  // Checks if the current user already has a review.
+  const isReviewed = product.reviews.find((review) => {
+    return review.user.toString() === newReview.user.toString();
+  });
+
+  if (isReviewed) {
+    product.reviews.forEach((review) => {
+      if (review.user.toString() === req.user.id.toString()) {
+        review.rating = newReview.rating;
+        review.comment = newReview.comment;
+      }
+    });
+    product.rating = (
+      (product.rating * (product.numOfReviews - 1) + newReview.rating) /
+      product.numOfReviews
+    ).toFixed(2);
+  } else {
+    product.reviews.push(newReview);
+    product.numOfReviews += 1;
+    product.rating = (
+      (product.rating * (product.numOfReviews - 1) + rating) /
+      product.numOfReviews
+    ).toFixed(2);
+  }
+
+  await product.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Review updated successfully",
+    product,
+  });
+});
+
+//Get all the reviews of a product
+export const getAllReviews = AsyncPromiseError(async (req, res, next) => {
+  const product = await Product.findOne(req.params.productId);
+  if (!product) {
+    return next(new ErrorHandler("Product Not Found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    reviews: product.reviews,
+  });
+});
+
+//Delete a review
+export const deleteReview = AsyncPromiseError(async (req, res, next) => {
+  const product = await Product.findById(req.query.productId);
+  if (!product) {
+    return next(new ErrorHandler("Product Not Found", 404));
+  }
+  let deletedReview = null;
+  const reviews = product.reviews.filter((review) => {
+    if (review._id.toString() !== req.query.reviewId.toString()) {
+      console.log("First Run");
+      return review;
+    } else {
+      console.log("Second Run");
+      deletedReview = review;
+    }
+  });
+
+  console.log(reviews);
+  console.log(deletedReview);
+
+  const rating =
+    product.rating * product.numOfReviews -
+    deletedReview.rating / (product.numOfReviews - 1);
+  product.numOfReviews -= 1;
+
+  await Product.findOneAndUpdate(
+    req.query.id,
+    { rating, reviews },
+    { new: true, runValidators: true }
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Review Deleted successfully",
+  });
+});

@@ -98,4 +98,4 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-export const orderModel = mongoose.model("Order", orderSchema);
+export default mongoose.model("Order", orderSchema);

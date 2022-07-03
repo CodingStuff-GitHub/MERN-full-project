@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
   shippingInfo: {
@@ -46,14 +46,14 @@ const orderSchema = new mongoose.Schema({
         required: true,
       },
       product: {
-        type: Mongoose.Schema.ObjectId,
+        type: mongoose.Schema.ObjectId,
         ref: "Product",
         required: true,
       },
     },
   ],
   user: {
-    type: Mongoose.Schema.ObjectId,
+    type: mongoose.Schema.ObjectId,
     ref: "User",
     required: true,
   },

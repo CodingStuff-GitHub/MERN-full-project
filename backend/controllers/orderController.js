@@ -1,7 +1,7 @@
-import Order from "../models/orderModel";
-import asyncPromiseError from "../middleware/asyncPromiseError";
-import ErrorHandler from "../middleware/errorHandler";
-import Product from "../models/productModel";
+import Order from "../models/orderModel.js";
+import asyncPromiseError from "../middleware/asyncPromiseError.js";
+import { ErrorHandler } from "../utils/errorHandler.js";
+import Product from "../models/productModel.js";
 
 //Create a new order
 export const createOrder = asyncPromiseError(async (req, res, next) => {

@@ -153,9 +153,6 @@ export const deleteReview = AsyncPromiseError(async (req, res, next) => {
     }
   });
 
-  console.log(reviews);
-  console.log(deletedReview);
-
   const rating =
     product.rating * product.numOfReviews -
     deletedReview.rating / (product.numOfReviews - 1);

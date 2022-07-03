@@ -41,7 +41,7 @@ router
 router.route("/review").put(isAuthenticated, createProductReview);
 
 // Get all reviews for a product
-router.route("/review").get(getAllReviews);
+router.route("/reviews").get(getAllReviews);
 
 // Delete a review
 router.route("/review").delete(isAuthenticated, deleteReview);

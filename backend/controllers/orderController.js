@@ -14,7 +14,7 @@ export const createOrder = asyncPromiseError(async (req, res, next) => {
     shippingPrice,
     totalPrice,
   } = req.body;
-  const order = Order.create({
+  const order = await Order.create({
     shippingInfo,
     orderItems,
     paymentInfo,
@@ -26,6 +26,20 @@ export const createOrder = asyncPromiseError(async (req, res, next) => {
     paidAt: Date.now(),
   });
   res.status(201).json({
+    success: true,
+    order,
+  });
+});
+
+export const getSingleOrder = asyncPromiseError(async (req, res, next) => {
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
+  if (!order) {
+    return next(new ErrorHandler("Order Not Found"), 404);
+  }
+  res.status(200).json({
     success: true,
     order,
   });

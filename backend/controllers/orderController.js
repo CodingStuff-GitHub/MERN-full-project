@@ -54,3 +54,22 @@ export const getLoggedUserOrders = asyncPromiseError(async (req, res, next) => {
     orders,
   });
 });
+
+/*
+ * Admin Routes
+ */
+// Get all orders.
+export const getAllOrders = asyncPromiseError(async (req, res, next) => {
+  const orders = await Order.find();
+  let amount = 0;
+  orders.forEach((order) => {
+    amount += order.totalPrice;
+  });
+  res.status(200).json({
+    success: true,
+    amount,
+    orders,
+  });
+});
+
+//Update Order Status

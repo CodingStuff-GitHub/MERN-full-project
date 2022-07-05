@@ -73,3 +73,25 @@ export const getAllOrders = asyncPromiseError(async (req, res, next) => {
 });
 
 //Update Order Status
+export const updateOrder = asyncPromiseError(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+  if (order.orderStatus === "Delivered") {
+    return next(new ErrorHandler("This Order is already delivered.", 400));
+  }
+  order.orderItems.forEach(async (item) => {
+    await updateStock(item.product, item.quantity);
+  });
+
+  order.orderStatus = req.body.orderStatus;
+  if (order.orderStatus === "Delivered") {
+    order.deliveredAt = Date.now();
+  }
+
+  await order.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    success: true,
+    message: "Order status has been updated successfully",
+    order,
+  });
+});

@@ -17,3 +17,11 @@ router.route("/order/:id").get(isAuthenticated, getSingleOrder);
 
 // Gets all orders for a user.
 router.route("/orders").get(isAuthenticated, getLoggedUserOrders);
+
+/**
+ * Admin Routes
+ */
+// Update order
+router
+  .route("/admin/orders/:id")
+  .put(isAuthenticated, AuthorizedRoles("admin"), getLoggedUserOrders);

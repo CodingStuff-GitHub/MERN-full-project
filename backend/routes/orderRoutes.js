@@ -3,6 +3,7 @@ import {
   createOrder,
   getSingleOrder,
   getLoggedUserOrders,
+  updateOrder,
 } from "../controllers/orderController.js";
 
 export const router = express.Router();
@@ -24,4 +25,4 @@ router.route("/orders").get(isAuthenticated, getLoggedUserOrders);
 // Update order
 router
   .route("/admin/orders/:id")
-  .put(isAuthenticated, AuthorizedRoles("admin"), getLoggedUserOrders);
+  .put(isAuthenticated, AuthorizedRoles("admin"), updateOrder);

@@ -31,6 +31,7 @@ export const createOrder = asyncPromiseError(async (req, res, next) => {
   });
 });
 
+// Get a single order
 export const getSingleOrder = asyncPromiseError(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate(
     "user",
@@ -42,5 +43,14 @@ export const getSingleOrder = asyncPromiseError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     order,
+  });
+});
+
+// Gets all orders of logged in user
+export const getLoggedUserOrders = asyncPromiseError(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user._id });
+  res.status(200).json({
+    success: true,
+    orders,
   });
 });

@@ -28,6 +28,7 @@ router
   .route("/admin/order/:id")
   .put(isAuthenticated, AuthorizedRoles("admin"), updateOrder);
 
+// Delete an order
 router
   .route("/admin/order/:id")
   .delete(isAuthenticated, AuthorizedRoles("admin"), deleteOrder);

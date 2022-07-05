@@ -75,6 +75,12 @@ export const getAllOrders = asyncPromiseError(async (req, res, next) => {
 //Update Order Status
 export const updateOrder = asyncPromiseError(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(new ErrorHandler("Order Not Found", 404));
+    F;
+  }
+
   if (order.orderStatus === "Delivered") {
     return next(new ErrorHandler("This Order is already delivered.", 400));
   }
@@ -96,6 +102,7 @@ export const updateOrder = asyncPromiseError(async (req, res, next) => {
   });
 });
 
+// Delete an order
 export const deleteOrder = asyncPromiseError(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
   if (!order) {

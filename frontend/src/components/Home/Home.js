@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import Hero from "../layout/Hero/Hero";
 import ProductCard from "./ProductCard.js";
+import Metadata from "../layout/Metadata";
 
 const product = {
   _id: "Product",
@@ -11,12 +12,15 @@ const product = {
     },
   ],
   price: "3000",
-  num_of_reviews: "253",
+  num_of_reviews: 253,
+  num_of_stars: 4.75,
 };
 
 const Home = () => {
   return (
     <Fragment>
+      <Metadata title="ExOFusion" />
+
       <Hero />
       {/* Heading */}
       <div className="lg:px-20 md:px-6 px-4 md:py-12 py-8">

@@ -17,7 +17,10 @@ const ProductCard = ({ product }) => {
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
           {product.name}
         </h5>
-        <Stars num_of_reviews={product.num_of_reviews} />
+        <Stars
+          num_of_stars={product.num_of_stars.toFixed(2)}
+          num_of_reviews={product.num_of_reviews}
+        />
         <div className="flex justify-between items-center">
           <span className="text-3xl font-bold text-gray-900 dark:text-white">
             ₹{product.price}

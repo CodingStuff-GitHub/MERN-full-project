@@ -61,7 +61,7 @@ userSchema.methods.getJWTToken = function () {
 
 //Compares password
 userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcryptjs.compare(enteredPassword, this.password);
+  return bcryptjs.compare(enteredPassword, this.password);
 };
 
 //Reset Password Token
@@ -77,7 +77,7 @@ userSchema.methods.resetPasswordTokenGenerator = function () {
 
   // Sets the password expiration date.
   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-  return resetToken;
+  return resetPasswordToken;
 };
 
 export default mongoose.model("User", userSchema);

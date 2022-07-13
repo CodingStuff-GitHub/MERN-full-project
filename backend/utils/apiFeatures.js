@@ -37,8 +37,8 @@ export class ApiFeatures {
     fieldsWithOperators.forEach((key) => {
       if (filteringTerms[key]) {
         filteringTerms[key] = Object.fromEntries(
-          Object.entries(filteringTerms[key]).map(([key, value]) => [
-            `$${key}`,
+          Object.entries(filteringTerms[key]).map(([index, value]) => [
+            `$${index}`,
             value,
           ])
         );

@@ -5,32 +5,39 @@ import emptyStar from "../../../images/ratings/empty-star.svg";
 
 const starsDisplay = (num_of_stars) => {
   let ratingStars = [];
+  let key = 0;
   for (let i = 0; i < Math.floor(num_of_stars); i++) {
     ratingStars.push(
       <img
+        key={key}
         src={filledStar}
         alt="ratingstar"
         className="w-5 h-5 text-yellow-300"
       />
     );
+    key++;
   }
   if (num_of_stars % 1 !== 0) {
     ratingStars.push(
       <img
+        key={key}
         src={halfStar}
         alt="ratingstar"
         className="w-5 h-5 text-yellow-300"
       />
     );
+    key++;
   }
   for (let i = 0; i < 5 - Math.ceil(num_of_stars); i++) {
     ratingStars.push(
       <img
+        key={key}
         src={emptyStar}
         alt="ratingstar"
         className="w-5 h-5 text-yellow-300"
       />
     );
+    key++;
   }
   return ratingStars;
 };

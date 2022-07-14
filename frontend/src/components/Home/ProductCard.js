@@ -18,8 +18,8 @@ const ProductCard = ({ product }) => {
           {product.name}
         </h5>
         <Stars
-          num_of_stars={product.num_of_stars.toFixed(2)}
-          num_of_reviews={product.num_of_reviews}
+          num_of_stars={product.rating.toFixed(2)}
+          num_of_reviews={product.numOfReviews}
         />
         <div className="flex justify-between items-center">
           <span className="text-3xl font-bold text-gray-900 dark:text-white">

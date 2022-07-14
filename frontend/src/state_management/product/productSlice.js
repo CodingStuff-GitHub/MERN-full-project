@@ -10,7 +10,7 @@ const initialState = {
 export const fetchProducts = createAsyncThunk(
   "productsTypePrefix",
   async () => {
-    return axios.get("/api/v1/products");
+    return axios.get("/api/v1/products").then((response) => response.data);
   }
 );
 

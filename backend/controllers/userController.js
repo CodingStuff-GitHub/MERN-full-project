@@ -5,7 +5,7 @@ import { jwtCookie } from "../utils/JWTcookie.js";
 import crypto from "crypto";
 
 // Register a user
-export const registerUser = asyncPromiseError(async (req, res, next) => {
+export const registerUser = asyncPromiseError(async (req, res, _next) => {
   const { name, email, password } = req.body;
   const user = await User.create({
     name: name,
@@ -42,7 +42,7 @@ export const loginUser = asyncPromiseError(async (req, res, next) => {
 });
 
 // Logs out a user
-export const logoutUser = asyncPromiseError(async (req, res, next) => {
+export const logoutUser = asyncPromiseError(async (_req, res, _next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
     httpOnly: true,
@@ -111,7 +111,7 @@ export const resetPassword = asyncPromiseError(async (req, res, next) => {
 });
 
 // Get user details.
-export const getUserDetails = asyncPromiseError(async (req, res, next) => {
+export const getUserDetails = asyncPromiseError(async (req, res, _next) => {
   res.status(200).json({
     success: true,
     user: req.user,
@@ -139,13 +139,13 @@ export const updatePassword = asyncPromiseError(async (req, res, next) => {
 });
 
 // Updates a user's profile
-export const updateProfile = asyncPromiseError(async (req, res, next) => {
+export const updateProfile = asyncPromiseError(async (req, res, _next) => {
   // TODO: Add avatar
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
   };
-  const user = await User.findByIdAndUpdate(req.user.id, newUserData);
+  await User.findByIdAndUpdate(req.user.id, newUserData);
   res.status(200).json({
     success: true,
     message: "Profile updated successfully",
@@ -157,7 +157,7 @@ export const updateProfile = asyncPromiseError(async (req, res, next) => {
  */
 
 // Get all users.
-export const getAllUsers = asyncPromiseError(async (req, res, next) => {
+export const getAllUsers = asyncPromiseError(async (_req, res, _next) => {
   const users = await User.find();
   res.status(200).json({
     success: true,
@@ -180,7 +180,7 @@ export const getSingleUser = asyncPromiseError(async (req, res, next) => {
 });
 
 //Update Role of user
-export const updateRoleUser = asyncPromiseError(async (req, res, next) => {
+export const updateRoleUser = asyncPromiseError(async (req, res, _next) => {
   const newData = {
     name: req.body.name,
     email: req.body.email,

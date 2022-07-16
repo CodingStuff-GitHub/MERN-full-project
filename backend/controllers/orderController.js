@@ -4,7 +4,7 @@ import { ErrorHandler } from "../utils/errorHandler.js";
 import { updateStock } from "../utils/updateStock.js";
 
 //Create a new order
-export const createOrder = asyncPromiseError(async (req, res, next) => {
+export const createOrder = asyncPromiseError(async (req, res, _next) => {
   const {
     shippingInfo,
     orderItems,
@@ -47,19 +47,21 @@ export const getSingleOrder = asyncPromiseError(async (req, res, next) => {
 });
 
 // Gets all orders of logged in user
-export const getLoggedUserOrders = asyncPromiseError(async (req, res, next) => {
-  const orders = await Order.find({ user: req.user._id });
-  res.status(200).json({
-    success: true,
-    orders,
-  });
-});
+export const getLoggedUserOrders = asyncPromiseError(
+  async (req, res, _next) => {
+    const orders = await Order.find({ user: req.user._id });
+    res.status(200).json({
+      success: true,
+      orders,
+    });
+  }
+);
 
 /*
  * Admin Routes
  */
 // Get all orders.
-export const getAllOrders = asyncPromiseError(async (req, res, next) => {
+export const getAllOrders = asyncPromiseError(async (_req, res, _next) => {
   const orders = await Order.find();
   let amount = 0;
   orders.forEach((order) => {
@@ -78,7 +80,6 @@ export const updateOrder = asyncPromiseError(async (req, res, next) => {
 
   if (!order) {
     return next(new ErrorHandler("Order Not Found", 404));
-    F;
   }
 
   if (order.orderStatus === "Delivered") {

@@ -79,50 +79,52 @@ export const deleteProduct = AsyncPromiseError(async (req, res, next) => {
 });
 
 // Create or Update a product review.
-export const createProductReview = AsyncPromiseError(async (req, res, next) => {
-  const { rating, comment, productid } = req.body;
-  const newReview = {
-    user: req.user.id,
-    name: req.user.name,
-    rating: Number(rating),
-    comment,
-  };
+export const createProductReview = AsyncPromiseError(
+  async (req, res, _next) => {
+    const { rating, comment, productid } = req.body;
+    const newReview = {
+      user: req.user.id,
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+    };
 
-  const product = await Product.findById(productid);
+    const product = await Product.findById(productid);
 
-  // Checks if the current user already has a review.
-  const isReviewed = product.reviews.find((review) => {
-    return review.user.toString() === newReview.user.toString();
-  });
-
-  if (isReviewed) {
-    product.reviews.forEach((review) => {
-      if (review.user.toString() === req.user.id.toString()) {
-        review.rating = newReview.rating;
-        review.comment = newReview.comment;
-      }
+    // Checks if the current user already has a review.
+    const isReviewed = product.reviews.find((review) => {
+      return review.user.toString() === newReview.user.toString();
     });
-    product.rating = (
-      (product.rating * (product.numOfReviews - 1) + newReview.rating) /
-      product.numOfReviews
-    ).toFixed(2);
-  } else {
-    product.reviews.push(newReview);
-    product.numOfReviews += 1;
-    product.rating = (
-      (product.rating * (product.numOfReviews - 1) + rating) /
-      product.numOfReviews
-    ).toFixed(2);
+
+    if (isReviewed) {
+      product.reviews.forEach((review) => {
+        if (review.user.toString() === req.user.id.toString()) {
+          review.rating = newReview.rating;
+          review.comment = newReview.comment;
+        }
+      });
+      product.rating = (
+        (product.rating * (product.numOfReviews - 1) + newReview.rating) /
+        product.numOfReviews
+      ).toFixed(2);
+    } else {
+      product.reviews.push(newReview);
+      product.numOfReviews += 1;
+      product.rating = (
+        (product.rating * (product.numOfReviews - 1) + rating) /
+        product.numOfReviews
+      ).toFixed(2);
+    }
+
+    await product.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Review updated successfully",
+      product,
+    });
   }
-
-  await product.save();
-
-  res.status(200).json({
-    success: true,
-    message: "Review updated successfully",
-    product,
-  });
-});
+);
 
 //Get all the reviews of a product
 export const getAllReviews = AsyncPromiseError(async (req, res, next) => {

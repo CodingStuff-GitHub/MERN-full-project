@@ -32,4 +32,4 @@ const productSlice = createSlice({
   },
 });
 
-export const productReducers = productSlice.reducer;
+export const productReducer = productSlice.reducer;

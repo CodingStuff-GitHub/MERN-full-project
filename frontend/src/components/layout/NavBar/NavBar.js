@@ -13,7 +13,7 @@ const NavBar = () => {
             <div className="dark:bg-gray-900 bg-gray-50 px-6 py-9">
               <div className="container mx-auto flex items-center justify-between">
                 {/* Heading */}
-                <a href="https://localhost:3000" className="flex items-center">
+                <a href="localhost:3000" className="flex items-center">
                   <img
                     src={MainLogo}
                     className="mr-3 h-6 sm:h-9"

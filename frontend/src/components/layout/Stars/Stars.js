@@ -49,9 +49,11 @@ const Stars = ({ num_of_stars, num_of_reviews }) => {
       <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
         {num_of_stars}
       </span>
-      <span className=" text-black-100 text-xs font-semibold py-0.5 dark:bg-blue-200 dark:text-blue-800">
-        ({num_of_reviews} reviews)
-      </span>
+      {num_of_reviews > 0 ? (
+        <span className=" text-black-100 text-xs font-semibold py-0.5 dark:bg-blue-200 dark:text-blue-800">
+          ({num_of_reviews} reviews)
+        </span>
+      ) : null}
     </div>
   );
 };

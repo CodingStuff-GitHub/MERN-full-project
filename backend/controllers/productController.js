@@ -28,7 +28,7 @@ export const getSingleProduct = AsyncPromiseError(async (req, res, next) => {
 // Get all products
 export const getAllProducts = AsyncPromiseError(async (req, res) => {
   const productCount = await Product.countDocuments();
-  const resultsPerPage = 2;
+  const resultsPerPage = 8;
   const apiFeatures = new ApiFeatures(Product.find(), req.query)
     .search()
     .filter()

@@ -9,8 +9,9 @@ const initialState = {
 
 export const fetchProducts = createAsyncThunk(
   "productsTypePrefix",
-  async () => {
-    return axios.get("/api/v1/products").then((response) => response.data);
+  async (keyword = "") => {
+    let url = `/api/v1/products?keyword=${keyword}`;
+    return axios.get(url).then((response) => response.data);
   }
 );
 

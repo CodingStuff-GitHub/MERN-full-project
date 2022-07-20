@@ -9,8 +9,8 @@ const initialState = {
 
 export const fetchProducts = createAsyncThunk(
   "productsTypePrefix",
-  async (keyword = "") => {
-    let url = `/api/v1/products?keyword=${keyword}`;
+  async (options = { keyword: "", page: 1 }) => {
+    let url = `/api/v1/products?keyword=${options.keyword}&page=${options.currentPage}`;
     return axios.get(url).then((response) => response.data);
   }
 );

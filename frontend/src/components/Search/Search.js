@@ -4,7 +4,7 @@ import { useNavigate, createSearchParams } from "react-router-dom";
 const Search = () => {
   const navigate = useNavigate();
   const [keyword, setkeyword] = useState("");
-  const params = { keyword: keyword, order: "newest" };
+  const params = { keyword: keyword };
   const searchSubmitHandler = (event) => {
     event.preventDefault();
     navigate({

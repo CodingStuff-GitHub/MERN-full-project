@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../Home/ProductCard";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,11 +8,16 @@ import ErrorView from "../layout/ErrorPage/ErrorView";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const { loading, products, err } = useSelector((state) => state.productStore);
   useEffect(() => {
-    dispatch(fetchProducts(searchParams.get("keyword") || ""));
-  }, [dispatch, searchParams]);
+    const options = {
+      currentPage: currentPage,
+      keyword: searchParams.get("keyword") || "",
+    };
+    dispatch(fetchProducts(options));
+  }, [dispatch, searchParams, currentPage]);
 
   return (
     <>
@@ -28,6 +33,14 @@ const Products = () => {
                 ))}
             </div>
           </div>
+          <button
+            onClick={() => {
+              setCurrentPage(currentPage + 1);
+            }}
+          >
+            Number
+          </button>
+          <div>{currentPage}</div>
         </div>
       ) : (
         <div

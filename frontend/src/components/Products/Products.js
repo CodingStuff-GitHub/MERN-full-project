@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "../Home/ProductCard";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../state_management/product/productSlice";
@@ -7,12 +7,12 @@ import Loader from "../layout/Loader/Loader";
 import ErrorView from "../layout/ErrorPage/ErrorView";
 
 const Products = () => {
-  const { keyword } = useParams();
+  const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
   const { loading, products, err } = useSelector((state) => state.productStore);
   useEffect(() => {
-    dispatch(fetchProducts(keyword));
-  }, [dispatch, keyword]);
+    dispatch(fetchProducts(searchParams.get("keyword") || ""));
+  }, [dispatch, searchParams]);
 
   return (
     <>

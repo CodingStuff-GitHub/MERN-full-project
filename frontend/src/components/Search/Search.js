@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
 
 const Search = () => {
   const navigate = useNavigate();
   const [keyword, setkeyword] = useState("");
+  const params = { keyword: keyword, order: "newest" };
   const searchSubmitHandler = (event) => {
     event.preventDefault();
-    navigate(`/products/${keyword}`);
+    navigate({
+      pathname: "/products",
+      search: `?${createSearchParams(params)}`,
+    });
   };
   return (
     <div className="p-8">

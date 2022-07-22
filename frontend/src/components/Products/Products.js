@@ -10,7 +10,11 @@ const Products = () => {
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
-  const { loading, products, err } = useSelector((state) => state.productStore);
+
+  const { loading, products, err, resultsPerPage, productsCount } = useSelector(
+    (state) => state.productStore
+  );
+
   useEffect(() => {
     const options = {
       currentPage: currentPage,
@@ -18,6 +22,36 @@ const Products = () => {
     };
     dispatch(fetchProducts(options));
   }, [dispatch, searchParams, currentPage]);
+
+  const numOfPages = Math.ceil(productsCount / resultsPerPage);
+  const pageNumberDisplay = () => {
+    let pageNumbers = [];
+    for (let i = 0; i < numOfPages; i++) {
+      if (i + 1 === currentPage) {
+        pageNumbers.push(
+          <p
+            key={i}
+            className="text-sm font-medium leading-none cursor-pointer text-indigo-700 border-t border-indigo-400 pt-3 mr-4 px-2"
+          >
+            {i + 1}
+          </p>
+        );
+      } else {
+        pageNumbers.push(
+          <p
+            key={i}
+            onClick={() => {
+              setCurrentPage(i + 1);
+            }}
+            className="text-sm font-medium leading-none cursor-pointer text-gray-600 hover:text-indigo-700 border-t border-transparent hover:border-indigo-400 pt-3 mr-4 px-2"
+          >
+            {i + 1}
+          </p>
+        );
+      }
+    }
+    return pageNumbers;
+  };
 
   return (
     <>
@@ -33,14 +67,17 @@ const Products = () => {
                 ))}
             </div>
           </div>
-          <button
-            onClick={() => {
-              setCurrentPage(currentPage + 1);
-            }}
-          >
-            Number
-          </button>
-          <div>{currentPage}</div>
+          {/* Pagination */}
+
+          {numOfPages > 1 && (
+            <>
+              <div className="flex items-center justify-center py-10 lg:px-0 sm:px-6 px-4">
+                <div className="flex items-center justify-between border-t border-gray-200">
+                  {pageNumberDisplay()}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       ) : (
         <div

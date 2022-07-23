@@ -30,14 +30,11 @@ export const getAllProducts = AsyncPromiseError(async (req, res) => {
   const resultsPerPage = 8;
   const apiFeatures = new ApiFeatures(Product.find(), req.query)
     .search()
-    .filter()
-    .pagination(resultsPerPage);
-  const apiFeaturesForCount = new ApiFeatures(Product.find(), req.query)
-    .search()
     .filter();
-  const products = await apiFeatures.queryFunction;
-  const productsCount =
-    await apiFeaturesForCount.queryFunction.countDocuments();
+  let products = await apiFeatures.queryFunction;
+  const productsCount = products.length;
+  apiFeatures.pagination(resultsPerPage);
+  products = await apiFeatures.queryFunction.clone();
   res.status(200).json({
     success: true,
     productsCount,

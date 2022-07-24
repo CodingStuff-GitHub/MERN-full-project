@@ -20,11 +20,12 @@ const Products = () => {
 
   useEffect(() => {
     const options = {
-      currentPage: currentPage,
+      currentPage: currentPage || 1,
       keyword: searchParams.get("keyword") || "",
+      priceValue: priceValue,
     };
     dispatch(fetchProducts(options));
-  }, [dispatch, searchParams, currentPage]);
+  }, [dispatch, searchParams, currentPage, priceValue]);
 
   const numOfPages = Math.ceil(productsCount / resultsPerPage);
   const pageNumberDisplay = () => {
@@ -64,6 +65,7 @@ const Products = () => {
         <>
           <div className="flex items-center justify-between w-full">
             <div className="flex flex-col lg:flex-row w-full items-start lg:items-start rounded bg-white">
+              {/* Filters */}
               <div className="w-full lg:w-1/5 h-100 dark:border-gray-700 lg:h-64 border-t lg:border-t-0 lg:border-r lg:border-l lg:rounded-r dark:bg-gray-700 bg-gray-100">
                 <div className="p-8">
                   <span>Price : </span>
@@ -80,6 +82,8 @@ const Products = () => {
                   />
                 </div>
               </div>
+
+              {/* Products View */}
               <div className="w-full lg:w-4/5 h-100 dark:bg-gray-800">
                 <div className="bg-white">
                   <div className="max-w-2xl mx-auto py-12 px-4 sm:py-6 sm:px-6 lg:max-w-7xl lg:px-8">

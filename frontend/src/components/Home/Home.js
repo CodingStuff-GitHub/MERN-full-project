@@ -10,8 +10,14 @@ import ErrorView from "../layout/ErrorPage/ErrorView";
 const Home = () => {
   const dispatch = useDispatch();
   const { loading, products, err } = useSelector((state) => state.productStore);
+
   useEffect(() => {
-    dispatch(fetchProducts());
+    const options = {
+      currentPage: 1,
+      keyword: "",
+      priceValue: [0, 25000],
+    };
+    dispatch(fetchProducts(options));
   }, [dispatch]);
 
   return (

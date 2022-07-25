@@ -12,18 +12,12 @@ const Home = () => {
   const { loading, products, err } = useSelector((state) => state.productStore);
 
   useEffect(() => {
-    const options = {
-      currentPage: 1,
-      keyword: "",
-      priceValue: [0, 25000],
-    };
-    dispatch(fetchProducts(options));
+    dispatch(fetchProducts({}));
   }, [dispatch]);
 
   return (
     <Fragment>
       {loading ? <Loader /> : null}
-      {!loading && err ? <ErrorView /> : null}
       {!loading && products ? (
         <>
           <Metadata title="ExOFusion" />
@@ -47,6 +41,7 @@ const Home = () => {
           </div>
         </>
       ) : null}
+      {!loading && err ? <ErrorView /> : null}
     </Fragment>
   );
 };

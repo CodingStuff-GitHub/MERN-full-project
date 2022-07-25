@@ -9,11 +9,31 @@ const initialState = {
 
 export const fetchProducts = createAsyncThunk(
   "productsTypePrefix",
-  async (options) => {
-    let url = `/api/v1/products?
+  async ({ category, keyword, currentPage, priceValue, rating }) => {
+    const options = {
+      category: category || "",
+      keyword: keyword || "",
+      currentPage: currentPage || 1,
+      priceValue: priceValue || [0, 25000],
+      rating: rating || 0,
+    };
+    let url = "";
+    if (options.category !== "") {
+      url = `/api/v1/products?
     keyword=${options.keyword}
     &page=${options.currentPage}
-    &price[gte]=${options.priceValue[0]}&price[lte]=${options.priceValue[1]}`;
+    &price[gte]=${options.priceValue[0]}
+    &price[lte]=${options.priceValue[1]}
+    &rating[gte]=${options.rating}
+    &category=${options.category}`;
+    } else {
+      url = `/api/v1/products?
+    keyword=${options.keyword}
+    &page=${options.currentPage}
+    &price[gte]=${options.priceValue[0]}
+    &price[lte]=${options.priceValue[1]}
+    &rating[gte]=${options.rating}`;
+    }
     return axios.get(url).then((response) => response.data);
   }
 );

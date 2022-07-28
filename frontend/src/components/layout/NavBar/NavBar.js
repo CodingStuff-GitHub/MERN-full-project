@@ -11,6 +11,7 @@ const links = {
   contact: "contact",
   about: "about",
   search: "search",
+  sign: "sign",
 };
 const NavBar = () => {
   return (
@@ -101,7 +102,7 @@ const NavBar = () => {
                       </button>
                     </Link>
                     {/* Profile Icon */}
-                    <Link to={links.home}>
+                    <Link to={links.sign}>
                       <button
                         aria-label="go to profile"
                         className="text-gray-800 dark:hover:text-gray-300 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800"

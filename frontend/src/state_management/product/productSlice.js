@@ -19,20 +19,9 @@ export const fetchProducts = createAsyncThunk(
     };
     let url = "";
     if (options.category !== "") {
-      url = `/api/v1/products?
-    keyword=${options.keyword}
-    &page=${options.currentPage}
-    &price[gte]=${options.priceValue[0]}
-    &price[lte]=${options.priceValue[1]}
-    &rating[gte]=${options.rating}
-    &category=${options.category}`;
+      url = `/api/v1/products?keyword=${options.keyword}&price[gte]=${options.priceValue[0]}&price[lte]=${options.priceValue[1]}&category=${options.category}&rating[gte]=${options.rating}`;
     } else {
-      url = `/api/v1/products?
-    keyword=${options.keyword}
-    &page=${options.currentPage}
-    &price[gte]=${options.priceValue[0]}
-    &price[lte]=${options.priceValue[1]}
-    &rating[gte]=${options.rating}`;
+      url = `/api/v1/products?keyword=${options.keyword}&price[gte]=${options.priceValue[0]}&price[lte]=${options.priceValue[1]}&rating[gte]=${options.rating}`;
     }
     return axios.get(url).then((response) => response.data);
   }

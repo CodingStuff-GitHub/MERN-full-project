@@ -6,7 +6,7 @@ const ProductCard = ({ product }) => {
   return (
     <Link to={`/product/${product._id}`}>
       <div className="max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-        <div className="w-full aspect-w-1 aspect-h-1 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+        <div className="w-full aspect-square rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
           <img
             className="p-8 rounded-t-lg w-full h-full object-center object-cover hover:opacity-75"
             src={product.images[0].url}

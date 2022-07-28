@@ -31,7 +31,6 @@ export class ApiFeatures {
     const filteringTerms = { ...this.queryFunctionParam };
     const removeFields = ["keyword", "page", "limit"];
     removeFields.forEach((key) => delete filteringTerms[key]);
-
     //Filtering with the fields having operators like gt, lt, gte, lte
     const fieldsWithOperators = ["price", "rating"];
     fieldsWithOperators.forEach((key) => {
@@ -44,7 +43,6 @@ export class ApiFeatures {
         );
       }
     });
-
     this.queryFunction = this.queryFunction.find(filteringTerms);
     return this;
   }

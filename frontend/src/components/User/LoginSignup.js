@@ -7,18 +7,22 @@ const LoginSignup = () => {
   const registerForm = useRef(null);
 
   const switchTabs = (e, tab) => {
+    if (tab === "register") {
+      registerButton.current.classList.add("border-b-2", "border-indigo-500");
+      loginButton.current.classList.remove("border-b-2", "border-indigo-500");
+
+      loginForm.current.classList.add("translate-x-full", "absolute");
+      registerForm.current.classList.remove("-translate-x-full", "absolute");
+    }
     if (tab === "login") {
       loginButton.current.classList.add("border-b-2", "border-indigo-500");
       registerButton.current.classList.remove(
         "border-b-2",
         "border-indigo-500"
       );
-      loginForm.current.classList.add("-translate-x-full");
-    }
-    if (tab === "register") {
-      registerButton.current.classList.add("border-b-2", "border-indigo-500");
-      loginButton.current.classList.remove("border-b-2", "border-indigo-500");
-      loginForm.current.classList.add("translate-x-0");
+
+      registerForm.current.classList.add("-translate-x-full", "absolute");
+      loginForm.current.classList.remove("translate-x-full", "absolute");
     }
   };
 
@@ -56,11 +60,11 @@ const LoginSignup = () => {
               </button>
             </div>
 
-            <div className="flex overflow-hidden">
+            <div className="relative flex overflow-hidden">
               {/* Login Form Div */}
               <div
                 ref={loginForm}
-                className="w-full transition p-6 space-y-4 md:space-y-6 sm:p-8"
+                className="absolute translate-x-full w-full transition duration-500 p-6 space-y-4 md:space-y-6 sm:p-8"
               >
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Sign in to your account
@@ -118,15 +122,50 @@ const LoginSignup = () => {
                   </button>
                 </form>
               </div>
+
               {/* Register Form Div */}
               <div
                 ref={registerForm}
-                className="transition p-6 space-y-4 md:space-y-6 sm:p-8"
+                className=" transition duration-500 w-full p-6 space-y-4 md:space-y-6 sm:p-8"
               >
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Create your account
                 </h1>
                 <form className="space-y-4 md:space-y-6" action="#">
+                  {/* Email */}
+                  <div>
+                    <label
+                      for="email"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Your email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="name@company.com"
+                      required=""
+                    />
+                  </div>
+                  {/* Email */}
+                  <div>
+                    <label
+                      for="email"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Your email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="name@company.com"
+                      required=""
+                    />
+                  </div>
                   {/* Email */}
                   <div>
                     <label

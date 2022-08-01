@@ -1,12 +1,41 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import profile from "../../images/profile.svg";
 
 const LoginSignup = () => {
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const { name, email, password } = user;
+  const [avatar, setAvatar] = useState();
+  const [avatarPreview, setAvatarPreview] = useState(profile);
+
   const loginButton = useRef(null);
   const loginForm = useRef(null);
   const registerButton = useRef(null);
   const registerForm = useRef(null);
 
-  const switchTabs = (e, tab) => {
+  const loginSubmit = () => {
+    console.log("Logged in successfully");
+  };
+
+  const registerSubmit = (e) => {
+    e.preventDefault();
+    const registerFormData = new FormData();
+    registerFormData.set("name", name);
+    registerFormData.set("email", email);
+    registerFormData.set("avatar", avatar);
+    registerFormData.set("password", password);
+    console.log("Registered successfully");
+  };
+
+  const switchTabs = (_e, tab) => {
     if (tab === "register") {
       registerButton.current.classList.add("border-b-2", "border-indigo-500");
       loginButton.current.classList.remove("border-b-2", "border-indigo-500");
@@ -23,6 +52,22 @@ const LoginSignup = () => {
 
       registerForm.current.classList.add("-translate-x-full", "absolute");
       loginForm.current.classList.remove("translate-x-full", "absolute");
+    }
+  };
+
+  const registerDataChange = (e) => {
+    if (e.target.name === "avatar") {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.result === 2) {
+          setAvatarPreview(reader.result);
+          setAvatar(reader.result);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
     }
   };
 
@@ -69,7 +114,7 @@ const LoginSignup = () => {
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Sign in to your account
                 </h1>
-                <form className="space-y-4 md:space-y-6" action="#">
+                <form className="space-y-4 md:space-y-6" onSubmit={loginSubmit}>
                   {/* Email */}
                   <div>
                     <label
@@ -85,6 +130,10 @@ const LoginSignup = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
                       required=""
+                      value={loginEmail}
+                      onChange={(e) => {
+                        setLoginEmail(e.target.value);
+                      }}
                     />
                   </div>
                   {/* Password */}
@@ -102,16 +151,20 @@ const LoginSignup = () => {
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       required=""
+                      value={loginPassword}
+                      onChange={(e) => {
+                        setLoginPassword(e.target.value);
+                      }}
                     />
                   </div>
                   {/* Forget Password Link */}
                   <div className="grid justify-items-end">
-                    <a
-                      href="#"
+                    <Link
+                      to="/forgot"
                       className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                     >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                   {/* Submit Button */}
                   <button
@@ -131,22 +184,28 @@ const LoginSignup = () => {
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Create your account
                 </h1>
-                <form className="space-y-4 md:space-y-6" action="#">
-                  {/* Email */}
+                <form
+                  className="space-y-4 md:space-y-6"
+                  onSubmit={(e) => registerSubmit}
+                  enctype="multipart/form-data"
+                >
+                  {/* Name */}
                   <div>
                     <label
-                      for="email"
+                      for="name"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Your email
+                      Name
                     </label>
                     <input
-                      type="email"
-                      name="email"
-                      id="email"
+                      type="text"
+                      name="name"
+                      value={name}
+                      id="name"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="name@company.com"
+                      placeholder="name"
                       required=""
+                      onChange={registerDataChange}
                     />
                   </div>
                   {/* Email */}
@@ -155,33 +214,41 @@ const LoginSignup = () => {
                       for="email"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Your email
+                      Email
                     </label>
                     <input
                       type="email"
                       name="email"
                       id="email"
+                      value={email}
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
                       required=""
+                      onChange={registerDataChange}
                     />
                   </div>
-                  {/* Email */}
+                  {/* Avatar Upload */}
                   <div>
                     <label
-                      for="email"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="file_input"
                     >
-                      Your email
+                      Upload avatar
                     </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="name@company.com"
-                      required=""
-                    />
+                    <div className="flex flex-row space-x-2">
+                      <img
+                        class="w-10 h-10 rounded-full border"
+                        src={profile}
+                        alt="Rounded avatar"
+                      />
+                      <input
+                        class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        id="file_input"
+                        type="file"
+                        accept="image/*"
+                        onChange={registerDataChange}
+                      />
+                    </div>
                   </div>
                   {/* Password */}
                   <div>
@@ -193,6 +260,7 @@ const LoginSignup = () => {
                     </label>
                     <input
                       type="password"
+                      value={password}
                       name="password"
                       id="password"
                       placeholder="••••••••"
@@ -200,14 +268,33 @@ const LoginSignup = () => {
                       required=""
                     />
                   </div>
+                  {/* Confirm Password */}
+                  <div>
+                    <label
+                      for="confirmPassword"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Confirm Password
+                    </label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={confirmPassword}
+                      id="confirmPassword"
+                      placeholder="••••••••"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required=""
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                  </div>
                   {/* Forget Password Link */}
                   <div className="grid justify-items-end">
-                    <a
-                      href="#"
+                    <Link
+                      to="/forgot"
                       className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                     >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                   {/* Submit Button */}
                   <button

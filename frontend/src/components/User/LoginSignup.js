@@ -1,12 +1,14 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import profile from "../../images/profile.svg";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUserDetails } from "../../state_management/user/userSlice";
 
 const LoginSignup = () => {
+  const dispatch = useDispatch();
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -21,7 +23,10 @@ const LoginSignup = () => {
   const registerButton = useRef(null);
   const registerForm = useRef(null);
 
-  const loginSubmit = () => {
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    const loginUserCreds = { loginEmail, loginPassword };
+    dispatch(fetchUserDetails(loginUserCreds));
     console.log("Logged in successfully");
   };
 
@@ -60,7 +65,7 @@ const LoginSignup = () => {
       const reader = new FileReader();
 
       reader.onload = () => {
-        if (reader.result === 2) {
+        if (reader.readyState === 2) {
           setAvatarPreview(reader.result);
           setAvatar(reader.result);
         }
@@ -73,6 +78,8 @@ const LoginSignup = () => {
 
   return (
     <>
+      <div>{loginEmail}</div>
+      <div>{loginPassword}</div>
       <section className="bg-gray-50 dark:bg-gray-900 py-8">
         <div className="flex flex-col items-center justify-center mx-auto ">
           {/* Login and Signup Card */}
@@ -114,11 +121,14 @@ const LoginSignup = () => {
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Sign in to your account
                 </h1>
-                <form className="space-y-4 md:space-y-6" onSubmit={loginSubmit}>
+                <form
+                  className="space-y-4 md:space-y-6"
+                  onSubmit={(e) => loginSubmit(e)}
+                >
                   {/* Email */}
                   <div>
                     <label
-                      for="email"
+                      htmlFor="email"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Your email
@@ -129,7 +139,7 @@ const LoginSignup = () => {
                       id="email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
-                      required=""
+                      required={true}
                       value={loginEmail}
                       onChange={(e) => {
                         setLoginEmail(e.target.value);
@@ -139,7 +149,7 @@ const LoginSignup = () => {
                   {/* Password */}
                   <div>
                     <label
-                      for="password"
+                      htmlFor="password"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Password
@@ -150,7 +160,7 @@ const LoginSignup = () => {
                       id="password"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      required=""
+                      required={true}
                       value={loginPassword}
                       onChange={(e) => {
                         setLoginPassword(e.target.value);
@@ -186,13 +196,13 @@ const LoginSignup = () => {
                 </h1>
                 <form
                   className="space-y-4 md:space-y-6"
-                  onSubmit={(e) => registerSubmit}
-                  enctype="multipart/form-data"
+                  onSubmit={(e) => registerSubmit(e)}
+                  encType="multipart/form-data"
                 >
                   {/* Name */}
                   <div>
                     <label
-                      for="name"
+                      htmlFor="name"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Name
@@ -204,14 +214,14 @@ const LoginSignup = () => {
                       id="name"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name"
-                      required=""
+                      required={true}
                       onChange={registerDataChange}
                     />
                   </div>
                   {/* Email */}
                   <div>
                     <label
-                      for="email"
+                      htmlFor="email"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Email
@@ -223,37 +233,15 @@ const LoginSignup = () => {
                       value={email}
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
-                      required=""
+                      required={true}
                       onChange={registerDataChange}
                     />
                   </div>
-                  {/* Avatar Upload */}
-                  <div>
-                    <label
-                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                      for="file_input"
-                    >
-                      Upload avatar
-                    </label>
-                    <div className="flex flex-row space-x-2">
-                      <img
-                        class="w-10 h-10 rounded-full border"
-                        src={profile}
-                        alt="Rounded avatar"
-                      />
-                      <input
-                        class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                        id="file_input"
-                        type="file"
-                        accept="image/*"
-                        onChange={registerDataChange}
-                      />
-                    </div>
-                  </div>
+
                   {/* Password */}
                   <div>
                     <label
-                      for="password"
+                      htmlFor="password"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Password
@@ -265,27 +253,32 @@ const LoginSignup = () => {
                       id="password"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      required=""
+                      required={true}
+                      onChange={registerDataChange}
                     />
                   </div>
-                  {/* Confirm Password */}
+                  {/* Avatar Upload */}
                   <div>
                     <label
-                      for="confirmPassword"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      htmlFor="file_input"
                     >
-                      Confirm Password
+                      Upload avatar
                     </label>
-                    <input
-                      type="password"
-                      name="confirmPassword"
-                      value={confirmPassword}
-                      id="confirmPassword"
-                      placeholder="••••••••"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      required=""
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
+                    <div className="flex flex-row space-x-2">
+                      <img
+                        className="w-10 h-10 rounded-full border"
+                        src={avatarPreview}
+                        alt="Rounded avatar"
+                      />
+                      <input
+                        className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        type="file"
+                        accept="image/*"
+                        name="avatar"
+                        onChange={(e) => registerDataChange(e)}
+                      />
+                    </div>
                   </div>
                   {/* Forget Password Link */}
                   <div className="grid justify-items-end">
@@ -301,7 +294,7 @@ const LoginSignup = () => {
                     type="submit"
                     className="w-full text-white bg-blue-700 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >
-                    Sign in
+                    Sign up
                   </button>
                 </form>
               </div>

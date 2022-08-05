@@ -10,15 +10,56 @@ import LoginSignup from "./components/User/LoginSignup";
 function App() {
   return (
     <Router>
-      <NavBar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/sign" element={<LoginSignup />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <NavBar />
+              <Home />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/product/:id"
+          element={
+            <>
+              <NavBar />
+              <ProductDetails />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <>
+              <NavBar />
+              <Products />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <>
+              <NavBar />
+              <Search />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/sign"
+          element={
+            <>
+              <LoginSignup />
+            </>
+          }
+        />
       </Routes>
-      <Footer />
     </Router>
   );
 }

@@ -78,8 +78,6 @@ const LoginSignup = () => {
 
   return (
     <>
-      <div>{loginEmail}</div>
-      <div>{loginPassword}</div>
       <section className="bg-gray-50 dark:bg-gray-900 py-8">
         <div className="flex flex-col items-center justify-center mx-auto ">
           {/* Login and Signup Card */}

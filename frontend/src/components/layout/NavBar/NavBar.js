@@ -6,12 +6,12 @@ import MainLogo from "../../../images/logo.svg";
 import { Link } from "react-router-dom";
 
 const links = {
-  home: "",
-  products: "products",
-  contact: "contact",
-  about: "about",
-  search: "search",
-  sign: "sign",
+  home: "/",
+  products: "/products",
+  contact: "/contact",
+  about: "/about",
+  search: "/search",
+  sign: "/sign",
 };
 const NavBar = () => {
   return (

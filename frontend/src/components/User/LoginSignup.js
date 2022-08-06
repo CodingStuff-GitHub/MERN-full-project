@@ -1,12 +1,18 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MainLogo from "../../images/logo.svg";
 import profile from "../../images/profile.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserDetails } from "../../state_management/user/userSlice";
+import {
+  fetchUserLogin,
+  fetchUserRegister,
+} from "../../state_management/user/userSlice";
+import Loader from "../layout/Loader/Loader";
 
 const LoginSignup = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
@@ -27,9 +33,16 @@ const LoginSignup = () => {
   const registerButton = useRef(null);
   const registerForm = useRef(null);
 
-  const { loading, user, err } = useSelector((state) => state.userStore);
+  const { loading, err, isAuthenticated } = useSelector(
+    (state) => state.userStore
+  );
 
   useEffect(() => {
+    if (isAuthenticated) {
+      navigate({
+        pathname: "/account",
+      });
+    }
     if (err) {
       loginEmailRef.current.classList.remove("border-gray-300");
       loginEmailRef.current.classList.add("border-red-500");
@@ -43,12 +56,12 @@ const LoginSignup = () => {
       loginPasswordRef.current.classList.remove("border-red-500");
       setAlertOpen(false);
     }
-  }, [err]);
+  }, [err, isAuthenticated, navigate]);
+
   const loginSubmit = (e) => {
     e.preventDefault();
     const loginUserCreds = { loginEmail, loginPassword };
-    dispatch(fetchUserDetails(loginUserCreds));
-    console.log("Logged in successfully");
+    dispatch(fetchUserLogin(loginUserCreds));
   };
 
   const registerSubmit = (e) => {
@@ -58,7 +71,7 @@ const LoginSignup = () => {
     registerFormData.set("email", email);
     registerFormData.set("avatar", avatar);
     registerFormData.set("password", password);
-    console.log("Registered successfully");
+    dispatch(fetchUserRegister(registerFormData));
   };
 
   const switchTabs = (_e, tab) => {
@@ -155,25 +168,25 @@ const LoginSignup = () => {
                 {/* Red Alert with error message */}
                 {alertOpen && err ? (
                   <div
-                    class="flex text-sm text-red-700 rounded-lg dark:bg-red-200 dark:text-red-800"
+                    className="flex text-sm text-red-700 rounded-lg dark:bg-red-200 dark:text-red-800"
                     role="alert"
                   >
                     <svg
                       aria-hidden="true"
-                      class="flex-shrink-0 inline w-5 h-5 mr-3"
+                      className="flex-shrink-0 inline w-5 h-5 mr-3"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       ></path>
                     </svg>
-                    <span class="sr-only">Info</span>
+                    <span className="sr-only">Info</span>
                     <div>
-                      <span class="font-medium">{err}</span>
+                      <span className="font-medium">{err}</span>
                     </div>
                   </div>
                 ) : null}
@@ -236,13 +249,17 @@ const LoginSignup = () => {
                       Forgot password?
                     </Link>
                   </div>
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="w-full text-white bg-blue-700 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  >
-                    Sign in
-                  </button>
+
+                  {loading ? (
+                    <Loader />
+                  ) : (
+                    <button
+                      type="submit"
+                      className="w-full text-white bg-blue-700 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                    >
+                      Sign in
+                    </button>
+                  )}
                 </form>
               </div>
 

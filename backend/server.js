@@ -1,5 +1,6 @@
 import app from "./app.js";
 import dotenv from "dotenv";
+import cloudinary from "cloudinary";
 import connectDatabase from "./config/databaseConnection.js";
 
 // Uncaught Expection Handling
@@ -12,6 +13,13 @@ process.on("uncaughtException", (err) => {
 dotenv.config({ path: "backend/config/config.env" });
 
 connectDatabase();
+
+//Add Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Starts the server on the given port.
 const server = app.listen(process.env.PORT, () => {

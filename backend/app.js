@@ -1,11 +1,15 @@
 import cookieParser from "cookie-parser";
 import express from "express";
+import bodyParser from "body-parser";
+import fileUpload from "express-fileupload";
 import errorMiddleware from "./middleware/error.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload({ useTempFiles: true }));
 
 import { router as productRoutes } from "./routes/productRoutes.js";
 import { router as userRoutes } from "./routes/userRoutes.js";

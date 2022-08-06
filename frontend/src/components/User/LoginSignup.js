@@ -20,9 +20,10 @@ const LoginSignup = () => {
     name: "",
     email: "",
     password: "",
+    avatar: "",
   });
   const { name, email, password } = registerUser;
-  const [avatar, setAvatar] = useState();
+  const [avatar, setAvatar] = useState(profile);
   const [avatarPreview, setAvatarPreview] = useState(profile);
   const [alertOpen, setAlertOpen] = useState(false);
 

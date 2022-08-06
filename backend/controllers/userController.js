@@ -4,23 +4,14 @@ import { ErrorHandler } from "../utils/errorHandler.js";
 import { jwtCookie } from "../utils/JWTcookie.js";
 import crypto from "crypto";
 import cloudinary from "cloudinary";
-import fs from "fs";
 
 // Register a user
 export const registerUser = asyncPromiseError(async (req, res, _next) => {
-  const myCloud = await cloudinary.v2.uploader.upload(
-    req.files.avatar.tempFilePath,
-    {
-      folder: "avatars",
-      width: 150,
-      crop: "scale",
-    }
-  );
-  try {
-    fs.unlinkSync(req.files.avatar.tempFilePath);
-  } catch (err) {
-    console.error(err);
-  }
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
 
   const { name, email, password } = req.body;
   const user = await User.create({

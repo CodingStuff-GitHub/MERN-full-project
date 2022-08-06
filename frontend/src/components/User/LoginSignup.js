@@ -8,6 +8,7 @@ import {
   fetchUserRegister,
 } from "../../state_management/user/userSlice";
 import Loader from "../layout/Loader/Loader";
+import profile_picture from "../../images/profile_picture.jpg";
 
 const LoginSignup = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,6 @@ const LoginSignup = () => {
     name: "",
     email: "",
     password: "",
-    avatar: "",
   });
   const { name, email, password } = registerUser;
   const [avatar, setAvatar] = useState(profile);
@@ -272,6 +272,31 @@ const LoginSignup = () => {
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Create your account
                 </h1>
+                {/* Red Alert with error message */}
+                {alertOpen && err ? (
+                  <div
+                    className="flex text-sm text-red-700 rounded-lg dark:bg-red-200 dark:text-red-800"
+                    role="alert"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      className="flex-shrink-0 inline w-5 h-5 mr-3"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                    <span className="sr-only">Info</span>
+                    <div>
+                      <span className="font-medium">{err}</span>
+                    </div>
+                  </div>
+                ) : null}
                 <form
                   className="space-y-4 md:space-y-6"
                   onSubmit={(e) => registerSubmit(e)}
@@ -368,12 +393,16 @@ const LoginSignup = () => {
                     </Link>
                   </div>
                   {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="w-full text-white bg-blue-700 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  >
-                    Sign up
-                  </button>
+                  {loading ? (
+                    <Loader />
+                  ) : (
+                    <button
+                      type="submit"
+                      className="w-full text-white bg-blue-700 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                    >
+                      Sign up
+                    </button>
+                  )}
                 </form>
               </div>
             </div>

@@ -7,20 +7,22 @@ import cloudinary from "cloudinary";
 
 // Register a user
 export const registerUser = asyncPromiseError(async (req, res, _next) => {
-  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-    folder: "avatars",
-    width: 150,
-    crop: "scale",
-  });
-
+  let myCloud = {};
+  try {
+    myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+  } catch (e) {}
   const { name, email, password } = req.body;
   const user = await User.create({
     name: name,
     email: email,
     password: password,
     avatar: {
-      public_id: myCloud.public_id,
-      url: myCloud.secure_url,
+      public_id: myCloud.public_id || "Sample Public ID",
+      url: myCloud.secure_url || "Sample URI",
     },
   });
   jwtCookie(user, 201, res);

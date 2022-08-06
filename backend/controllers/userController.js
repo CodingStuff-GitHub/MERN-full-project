@@ -8,7 +8,6 @@ import fs from "fs";
 
 // Register a user
 export const registerUser = asyncPromiseError(async (req, res, _next) => {
-  console.log(req.files);
   const myCloud = await cloudinary.v2.uploader.upload(
     req.files.avatar.tempFilePath,
     {

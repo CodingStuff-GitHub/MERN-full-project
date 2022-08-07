@@ -45,13 +45,30 @@ export const fetchUserRegister = createAsyncThunk(
     );
   }
 );
+export const fetchUserLoad = createAsyncThunk(
+  "userLoadTypePrefix",
+  async () => {
+    const configuration = { headers: { "Content-Type": "application/json" } };
+    const url = `/api/v1/profile`;
+    return axios.get(url, configuration).then(
+      (response) => response.data,
+      (error) => {
+        return error.response.data;
+      }
+    );
+  }
+);
 
 const userSlice = createSlice({
   name: "userSlice",
   initialState,
   extraReducers: (builder) => {
     builder.addMatcher(
-      isAnyOf(fetchUserLogin.pending, fetchUserRegister.pending),
+      isAnyOf(
+        fetchUserLoad.pending,
+        fetchUserLogin.pending,
+        fetchUserRegister.pending
+      ),
       (state) => {
         state.loading = true;
         state.err = "";
@@ -60,7 +77,11 @@ const userSlice = createSlice({
       }
     );
     builder.addMatcher(
-      isAnyOf(fetchUserLogin.fulfilled, fetchUserRegister.fulfilled),
+      isAnyOf(
+        fetchUserLoad.fulfilled,
+        fetchUserLogin.fulfilled,
+        fetchUserRegister.fulfilled
+      ),
       (state, action) => {
         state.loading = false;
 
@@ -76,7 +97,11 @@ const userSlice = createSlice({
       }
     );
     builder.addMatcher(
-      isAnyOf(fetchUserLogin.rejected, fetchUserRegister.rejected),
+      isAnyOf(
+        fetchUserLoad.rejected,
+        fetchUserLogin.rejected,
+        fetchUserRegister.rejected
+      ),
       (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;

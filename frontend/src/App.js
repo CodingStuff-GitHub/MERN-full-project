@@ -79,7 +79,7 @@ function App() {
           path="/contact"
           element={
             <>
-              <NavBar />
+              <>Contact Page</>
             </>
           }
         />
@@ -87,7 +87,7 @@ function App() {
           path="/about"
           element={
             <>
-              <NavBar />
+              <>About Page</>
             </>
           }
         />

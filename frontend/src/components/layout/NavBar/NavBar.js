@@ -4,6 +4,7 @@ import ProfileIcon from "../../../images/profile.svg";
 import CartIcon from "../../../images/cart.svg";
 import MainLogo from "../../../images/logo.svg";
 import { Link } from "react-router-dom";
+import DropDownLink from "./DropDownLink";
 
 const links = {
   home: "/",
@@ -15,6 +16,7 @@ const links = {
 };
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showDropDown, setShowDropDown] = useState(false);
   return (
     <div className="dark:bg-gray-900">
       <div className="container mx-auto relative">
@@ -141,6 +143,7 @@ const NavBar = () => {
                   />
                 </button>
               </Link>
+
               {/* Profile Icon */}
               <Link to={links.sign}>
                 <button
@@ -154,6 +157,7 @@ const NavBar = () => {
                   />
                 </button>
               </Link>
+              <DropDownLink />
             </div>
 
             {/* Options Button */}
@@ -326,7 +330,9 @@ const NavBar = () => {
                       src={ProfileIcon}
                       alt="profile"
                     />
-                    <span className="text-base p-2 justify-center">Search</span>
+                    <span className="text-base p-2 justify-center">
+                      Profile
+                    </span>
                   </div>
                 </Link>
               </li>

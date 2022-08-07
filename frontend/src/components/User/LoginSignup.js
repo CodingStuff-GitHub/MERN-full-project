@@ -8,7 +8,7 @@ import {
   fetchUserRegister,
 } from "../../state_management/user/userSlice";
 import Loader from "../layout/Loader/Loader";
-import profile_picture from "../../images/profile_picture.jpg";
+import Metadata from "../layout/Metadata";
 
 const LoginSignup = () => {
   const dispatch = useDispatch();
@@ -118,6 +118,7 @@ const LoginSignup = () => {
 
   return (
     <>
+      <Metadata title="ExOFusion Account" />
       <section className="h-screen bg-gray-50 dark:bg-gray-900 py-8">
         <div className="relative flex flex-col items-center justify-center mx-auto ">
           <Link

@@ -14,6 +14,7 @@ import {
   Typography,
   Rating,
 } from "@mui/material";
+import Metadata from "../layout/Metadata";
 
 const categoryList = ["Toy", "Men", "Shirt", "Pant", "Mobile", "Laptop"];
 const Products = () => {
@@ -72,6 +73,7 @@ const Products = () => {
 
   return (
     <>
+      <Metadata title="All Products" />
       <div>
         <div className="flex items-center justify-between w-full">
           <div className="flex flex-col lg:flex-row w-full items-start lg:items-start rounded bg-white">

@@ -6,6 +6,7 @@ import Loader from "../layout/Loader/Loader";
 import ErrorView from "../layout/ErrorPage/ErrorView";
 import Stars from "../layout/Stars/Stars";
 import ReviewCard from "./ReviewCard";
+import Metadata from "../layout/Metadata";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -33,6 +34,7 @@ const ProductDetails = () => {
       {!loading && err ? <ErrorView /> : null}
       {!loading && product ? (
         <>
+          <Metadata title={product.name} />
           {/* Product Details*/}
           <div className="md:flex items-start justify-center py-12 2xl:px-20 md:px-6 px-4">
             {/* Images (Full Left)*/}

@@ -6,7 +6,7 @@ import asyncPromiseError from "./asyncPromiseError.js";
 export const isAuthenticated = asyncPromiseError(async (req, _res, next) => {
   const { token } = req.cookies;
   if (!token) {
-    return next(new ErrorHandler("Please Login to access this page"));
+    return next(new ErrorHandler("Please Login to access this page", 403));
   }
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
   req.user = await User.findById(decodedData.id);
@@ -17,7 +17,10 @@ export const AuthorizedRoles = (...roles) => {
   return (req, _res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
-        new ErrorHandler(`The role '${req.user.role}' is not allowed.`, 403)
+        new ErrorHandler(
+          `The role '${req.user.role}' is not allowed to access this page.`,
+          403
+        )
       );
     }
     next();

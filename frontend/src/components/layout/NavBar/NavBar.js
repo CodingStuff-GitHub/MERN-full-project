@@ -16,7 +16,6 @@ const links = {
 };
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const [showDropDown, setShowDropDown] = useState(false);
   return (
     <div className="dark:bg-gray-900">
       <div className="container mx-auto relative">
@@ -78,24 +77,24 @@ const NavBar = () => {
 
             {/* Categories Buttons */}
             <div className="hidden md:block">
-              <ul className="flex items-center space-x-6">
-                <li>
+              <div className="flex items-center space-x-6">
+                <div>
                   <Link
                     to={links.home}
                     className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline"
                   >
                     Home
                   </Link>
-                </li>
-                <li>
+                </div>
+                <div>
                   <Link
                     to={links.products}
                     className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline"
                   >
                     Products
                   </Link>
-                </li>
-                <li>
+                </div>
+                <div>
                   <Link
                     to={links.contact}
                     href="http://localhost:3000"
@@ -103,16 +102,16 @@ const NavBar = () => {
                   >
                     Contact
                   </Link>
-                </li>
-                <li>
+                </div>
+                <div>
                   <Link
                     to={links.about}
                     className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline"
                   >
                     About
                   </Link>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
 
             {/* Account Cart Fav Buttons */}
@@ -253,27 +252,27 @@ const NavBar = () => {
             </div>
           </div>
           <div className="mt-4 mx-4">
-            <ul className="flex flex-col space-y-4">
-              <li className="border-b border-gray-200 dark:border-gray-700 dark:text-gray-700 pb-4 px-1 flex items-center justify-between">
+            <div className="flex flex-col space-y-4">
+              <div className="border-b border-gray-200 dark:border-gray-700 dark:text-gray-700 pb-4 px-1 flex items-center justify-between">
                 <Link
                   to={links.home}
                   className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline"
                 >
                   Home
                 </Link>
-              </li>
-              <li className="border-b border-gray-200 dark:border-gray-700 dark:text-gray-700 pb-4 px-1 flex items-center justify-between">
-                <li>
+              </div>
+              <div className="border-b border-gray-200 dark:border-gray-700 dark:text-gray-700 pb-4 px-1 flex items-center justify-between">
+                <div>
                   <Link
                     to={links.products}
                     className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline"
                   >
                     Products
                   </Link>
-                </li>
-              </li>
-              <li className="border-b border-gray-200 dark:border-gray-700 dark:text-gray-700 pb-4 px-1 flex items-center justify-between">
-                <li>
+                </div>
+              </div>
+              <div className="border-b border-gray-200 dark:border-gray-700 dark:text-gray-700 pb-4 px-1 flex items-center justify-between">
+                <div>
                   <Link
                     to={links.contact}
                     href="http://localhost:3000"
@@ -281,24 +280,24 @@ const NavBar = () => {
                   >
                     Contact
                   </Link>
-                </li>
-              </li>
-              <li className="border-b border-gray-200 dark:border-gray-700 dark:text-gray-700 pb-4 px-1 flex items-center justify-between">
-                <li>
+                </div>
+              </div>
+              <div className="border-b border-gray-200 dark:border-gray-700 dark:text-gray-700 pb-4 px-1 flex items-center justify-between">
+                <div>
                   <Link
                     to={links.about}
                     className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline"
                   >
                     About
                   </Link>
-                </li>
-              </li>
-            </ul>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="w-full h-full flex items-end">
-            <ul className="bg-gray-50 dark:bg-gray-800 py-10 px-4 flex flex-col space-y-8 w-full">
-              <li>
+            <div className="bg-gray-50 dark:bg-gray-800 py-10 px-4 flex flex-col space-y-8 w-full">
+              <div>
                 <Link to={links.search}>
                   <div className="flex">
                     <img
@@ -309,8 +308,8 @@ const NavBar = () => {
                     <span className="text-base p-2 justify-center">Search</span>
                   </div>
                 </Link>
-              </li>
-              <li>
+              </div>
+              <div>
                 <Link to={links.home}>
                   <div className="flex">
                     <img
@@ -321,8 +320,8 @@ const NavBar = () => {
                     <span className="text-base p-2 justify-center">Cart</span>
                   </div>
                 </Link>
-              </li>
-              <li>
+              </div>
+              <div>
                 <Link to={links.sign}>
                   <div className="flex">
                     <img
@@ -335,8 +334,8 @@ const NavBar = () => {
                     </span>
                   </div>
                 </Link>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

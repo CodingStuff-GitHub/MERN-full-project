@@ -9,12 +9,17 @@ import Search from "./components/Search/Search";
 import LoginSignup from "./components/User/LoginSignup";
 import { useDispatch } from "react-redux";
 import { fetchUserLoad } from "./state_management/user/userSlice";
+import { useCookies } from "react-cookie";
 
 function App() {
   const dispatch = useDispatch();
+  const [cookies] = useCookies();
+
   useEffect(() => {
-    dispatch(fetchUserLoad());
-  }, [dispatch]);
+    if (cookies.token) {
+      dispatch(fetchUserLoad());
+    }
+  }, [cookies.token, dispatch]);
 
   return (
     <Router>

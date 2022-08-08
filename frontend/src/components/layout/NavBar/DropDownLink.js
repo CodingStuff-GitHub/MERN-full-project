@@ -1,9 +1,24 @@
 import React, { useState } from "react";
 import onClickOutside from "react-onclickoutside";
-import DropDownList from "./DropDownList.js";
+import { useSelector } from "react-redux";
+import ProfileIcon from "../../../images/profile.svg";
+import { Link } from "react-router-dom";
+
+//map function okay?
+
+const links = {
+  home: "/",
+  products: "/products",
+  contact: "/contact",
+  about: "/about",
+  search: "/search",
+  sign: "/sign",
+  account: "/account",
+};
 
 function DropDownLink() {
   const [showDropdown, setShowDropdown] = useState(false);
+  const { user } = useSelector((state) => state.userStore.user);
 
   DropDownLink.handleClickOutside = () => {
     setShowDropdown(false);
@@ -18,12 +33,70 @@ function DropDownLink() {
         type="button"
       >
         <img
-          className="justify-center flex align-middle p-1 hover:bg-gray-300 rounded-full h-10 w-10"
-          src="https://cdn.dribbble.com/users/304574/screenshots/6222816/male-user-placeholder.png"
+          className="justify-center flex align-middle p-2 hover:bg-gray-300 rounded-full h-10 w-10 border border-gray-200"
+          src={user.avatar ? user.avatar : ProfileIcon}
           alt="user avatar"
         />
       </button>
-      {showDropdown ? <DropDownList /> : null}
+      {showDropdown ? (
+        <div className="relative">
+          <div
+            id="dropdownAvatar"
+            className="absolute transition-all -translate-x-32 translate-y-6 mx-auto z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+          >
+            <div className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+              <div>{user.name}</div>
+              <div className="font-medium text-gray-500 truncate">
+                {user.email}
+              </div>
+            </div>
+            <div
+              className="py-1 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="dropdownUserAvatarButton"
+            >
+              {user.role === "admin" ? (
+                <div>
+                  <Link
+                    to={links.home}
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    Dashboard
+                  </Link>
+                </div>
+              ) : null}
+
+              <div>
+                <Link
+                  to={links.home}
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Orders
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to={links.account}
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Profile
+                </Link>
+              </div>
+            </div>
+            <div className="py-1">
+              <Link
+                to={links.home}
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              >
+                Log out
+              </Link>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

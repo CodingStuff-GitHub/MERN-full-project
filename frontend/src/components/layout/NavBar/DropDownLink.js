@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import onClickOutside from "react-onclickoutside";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ProfileIcon from "../../../images/profile.svg";
-import { Link } from "react-router-dom";
 import { fetchUserLogOut } from "../../../state_management/user/userSlice";
 
 function CheckRole(role) {

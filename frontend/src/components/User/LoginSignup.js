@@ -63,6 +63,9 @@ const LoginSignup = () => {
     e.preventDefault();
     const loginUserCreds = { loginEmail, loginPassword };
     dispatch(fetchUserLogin(loginUserCreds));
+    navigate({
+      pathname: "/",
+    });
   };
 
   const registerSubmit = (e) => {

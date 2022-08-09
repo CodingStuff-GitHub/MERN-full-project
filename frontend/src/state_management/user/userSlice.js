@@ -50,7 +50,21 @@ export const fetchUserLoad = createAsyncThunk(
   async () => {
     const configuration = { headers: { "Content-Type": "application/json" } };
     const url = `/api/v1/profile`;
-    return axios.get(url, configuration).then(
+    return axios.get(url, {}, configuration).then(
+      (response) => response.data,
+      (error) => {
+        return error.response.data;
+      }
+    );
+  }
+);
+
+export const fetchUserLogOut = createAsyncThunk(
+  "userLogoutTypePrefix",
+  async () => {
+    const configuration = { headers: { "Content-Type": "application/json" } };
+    const url = `/api/v1/logout`;
+    return axios.post(url, configuration).then(
       (response) => response.data,
       (error) => {
         return error.response.data;
@@ -63,11 +77,18 @@ const userSlice = createSlice({
   name: "userSlice",
   initialState,
   extraReducers: (builder) => {
+    builder.addCase(fetchUserLogOut.fulfilled, (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = {};
+      state.err = "";
+    });
     builder.addMatcher(
       isAnyOf(
         fetchUserLoad.pending,
         fetchUserLogin.pending,
-        fetchUserRegister.pending
+        fetchUserRegister.pending,
+        fetchUserLogOut.pending
       ),
       (state) => {
         state.loading = true;
@@ -87,7 +108,7 @@ const userSlice = createSlice({
 
         if (action.payload.success) {
           state.isAuthenticated = true;
-          state.user = action.payload;
+          state.user = action.payload.user;
           state.err = "";
         } else {
           state.isAuthenticated = false;
@@ -100,7 +121,8 @@ const userSlice = createSlice({
       isAnyOf(
         fetchUserLoad.rejected,
         fetchUserLogin.rejected,
-        fetchUserRegister.rejected
+        fetchUserRegister.rejected,
+        fetchUserLogOut.rejected
       ),
       (state, action) => {
         state.loading = false;

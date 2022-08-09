@@ -4,7 +4,9 @@ import { useSelector } from "react-redux";
 import ProfileIcon from "../../../images/profile.svg";
 import { Link } from "react-router-dom";
 
-//map function okay?
+function CheckRole(role) {
+  return role === "admin";
+}
 
 const links = {
   home: "/",
@@ -34,7 +36,7 @@ function DropDownLink() {
       >
         <img
           className="justify-center flex align-middle p-2 hover:bg-gray-300 rounded-full h-10 w-10 border border-gray-200"
-          src={user.avatar ? user.avatar : ProfileIcon}
+          src={user.avatar ? user.avatar.url : ProfileIcon}
           alt="user avatar"
         />
       </button>
@@ -54,46 +56,38 @@ function DropDownLink() {
               className="py-1 text-sm text-gray-700 dark:text-gray-200"
               aria-labelledby="dropdownUserAvatarButton"
             >
-              {user.role === "admin" ? (
-                <div>
-                  <Link
-                    to={links.home}
-                    onClick={() => setShowDropdown(!showDropdown)}
-                    className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Dashboard
-                  </Link>
-                </div>
-              ) : null}
-
-              <div>
+              {CheckRole(user.role) && (
                 <Link
                   to={links.home}
                   onClick={() => setShowDropdown(!showDropdown)}
                   className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
-                  Orders
+                  Dashboard
                 </Link>
-              </div>
-              <div>
-                <Link
-                  to={links.account}
-                  onClick={() => setShowDropdown(!showDropdown)}
-                  className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Profile
-                </Link>
-              </div>
-            </div>
-            <div className="py-1">
+              )}
               <Link
                 to={links.home}
                 onClick={() => setShowDropdown(!showDropdown)}
-                className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
-                Log out
+                Orders
+              </Link>
+
+              <Link
+                to={links.account}
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Profile
               </Link>
             </div>
+            <Link
+              to={links.home}
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="block py-3 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+            >
+              Log out
+            </Link>
           </div>
         </div>
       ) : null}

@@ -17,7 +17,7 @@ const links = {
 };
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const { isAuthenticated, user } = useSelector((state) => state.userStore);
+  const { isAuthenticated } = useSelector((state) => state.userStore);
   return (
     <>
       <div className="dark:bg-gray-900">

@@ -158,12 +158,12 @@ const Products = () => {
             ) : null}
             {!loading && products.length === 0 ? (
               <div
-                class="flex p-4 my-4 mx-auto text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
+                className="flex p-4 my-4 mx-auto text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
                 role="alert"
               >
                 <svg
                   aria-hidden="true"
-                  class="inline flex-shrink-0 mr-3 w-5 h-5"
+                  className="inline flex-shrink-0 mr-3 w-5 h-5"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +175,7 @@ const Products = () => {
                   ></path>
                 </svg>
                 <div>
-                  <span class="font-medium">No Products Found!</span> Try
+                  <span className="font-medium">No Products Found!</span> Try
                   checking your spelling or use less filters.
                 </div>
               </div>

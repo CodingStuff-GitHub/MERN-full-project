@@ -91,7 +91,7 @@ function DropDownLink() {
                   onClick={() => setShowDropdown(!showDropdown)}
                   className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
-                  Profile
+                  Account
                 </Link>
               </div>
               <Link

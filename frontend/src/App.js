@@ -10,6 +10,8 @@ import LoginSignup from "./components/User/LoginSignup";
 import { useDispatch } from "react-redux";
 import { fetchUserLoad } from "./state_management/user/userSlice";
 import { useCookies } from "react-cookie";
+import Account from "./components/Account/Account";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -72,14 +74,19 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/account"
-          element={
-            <>
-              <NavBar />
-            </>
-          }
-        />
+        <Route exact path="/account" element={<ProtectedRoute />}>
+          <Route
+            exact
+            path="/account"
+            element={
+              <>
+                <NavBar />
+                <Account />
+                <Footer />
+              </>
+            }
+          />
+        </Route>
         <Route
           path="/contact"
           element={

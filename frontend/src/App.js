@@ -12,6 +12,7 @@ import { fetchUserLoad } from "./state_management/user/userSlice";
 import { useCookies } from "react-cookie";
 import Account from "./components/Account/Account";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
+import UpdateProfile from "./components/User/UpdateProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -74,19 +75,7 @@ function App() {
             </>
           }
         />
-        <Route exact path="/account" element={<ProtectedRoute />}>
-          <Route
-            exact
-            path="/account"
-            element={
-              <>
-                <NavBar />
-                <Account />
-                <Footer />
-              </>
-            }
-          />
-        </Route>
+
         <Route
           path="/contact"
           element={
@@ -103,6 +92,29 @@ function App() {
             </>
           }
         />
+
+        <Route path="/account" element={<ProtectedRoute />}>
+          <Route
+            path="/account"
+            element={
+              <>
+                <NavBar />
+                <Account />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/account/update"
+            element={
+              <>
+                <NavBar />
+                <UpdateProfile />
+                <Footer />
+              </>
+            }
+          />
+        </Route>
       </Routes>
     </Router>
   );

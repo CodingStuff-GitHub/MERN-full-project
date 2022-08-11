@@ -149,10 +149,21 @@ export const updatePassword = asyncPromiseError(async (req, res, next) => {
 
 // Updates a user's profile
 export const updateProfile = asyncPromiseError(async (req, res, _next) => {
-  // TODO: Add avatar
+  let myCloud = {};
+  try {
+    myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+  } catch (e) {}
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
+    avatar: {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    },
   };
   await User.findByIdAndUpdate(req.user.id, newUserData);
   res.status(200).json({

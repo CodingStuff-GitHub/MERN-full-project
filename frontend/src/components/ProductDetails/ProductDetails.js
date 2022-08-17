@@ -7,6 +7,7 @@ import ErrorView from "../layout/ErrorPage/ErrorView";
 import Stars from "../layout/Stars/Stars";
 import ReviewCard from "./ReviewCard";
 import Metadata from "../layout/Metadata";
+import Carousel from "./Carousel";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -39,18 +40,10 @@ const ProductDetails = () => {
           <div className="md:flex items-start justify-center py-12 2xl:px-20 md:px-6 px-4">
             {/* Images (Full Left)*/}
             <div className="xl:w-2/6 lg:w-2/5 w-80 md:block hidden">
-              <img
-                className="w-full"
-                alt="img of a girl posing"
-                src={product.images[0].url}
-              />
+              <Carousel product={product} />
             </div>
             <div className="md:hidden">
-              <img
-                className="w-full"
-                alt="img of a girl posing"
-                src={product.images[0].url}
-              />
+              <Carousel product={product} />
             </div>
 
             {/* Description (Full Right) */}

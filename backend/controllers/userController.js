@@ -2,8 +2,8 @@ import asyncPromiseError from "../middleware/asyncPromiseError.js";
 import User from "../models/userModel.js";
 import { ErrorHandler } from "../utils/errorHandler.js";
 import { jwtCookie } from "../utils/JWTcookie.js";
-import crypto from "crypto";
 import cloudinary from "cloudinary";
+import { sendEmail } from "../utils/sendEmail.js";
 
 // Register a user
 export const registerUser = asyncPromiseError(async (req, res, _next) => {
@@ -76,9 +76,12 @@ export const forgotPassword = asyncPromiseError(async (req, res, next) => {
 
   const resetPasswordUrl = `${req.protocol}://${req.get(
     "host"
-  )}/api/v1/forgotPassword/reset/${resetToken}`;
-
-  const message = `Your reset password link is : - \n ${resetPasswordUrl}\n If you did not want to reset your password, ignore it`;
+  )}/setNewPassword/${resetToken}`;
+  const options = {
+    email: user.email,
+    resetPasswordUrl: resetPasswordUrl,
+  };
+  sendEmail(options);
   try {
     res.status(200).json({
       success: true,
@@ -93,16 +96,12 @@ export const forgotPassword = asyncPromiseError(async (req, res, next) => {
 // Resets the user's password.
 export const resetPassword = asyncPromiseError(async (req, res, next) => {
   // Generates hash of reset token to compare with the database one
-  const resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(req.params.token)
-    .digest("hex");
+  const resetPasswordToken = req.params.token;
   //Search the user and it should not be expired
   const user = await User.findOne({
     resetPasswordToken,
     resetPasswordExpire: { $gt: Date.now() },
-  });
-
+  }).select("+password");
   if (!user) {
     return next(new ErrorHandler("Reset Link is invalid or expired.", 400));
   }
@@ -116,7 +115,10 @@ export const resetPassword = asyncPromiseError(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
 
   await user.save();
-  return res.redirect("/login");
+  return res.status(200).json({
+    success: true,
+    message: "Password reset successful.",
+  });
 });
 
 // Get user details.
@@ -130,8 +132,7 @@ export const getUserDetails = asyncPromiseError(async (req, res, _next) => {
 // Updates the user's password.
 export const updatePassword = asyncPromiseError(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
-  const isPasswordMatched = user.comparePassword(req.body.oldPassword);
-
+  const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
   // Returns an error if the old password is invalid.
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid old password.", 400));

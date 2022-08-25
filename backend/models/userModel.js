@@ -75,6 +75,7 @@ userSchema.methods.resetPasswordTokenGenerator = function () {
     .update(resetToken)
     .digest("hex");
 
+  this.resetPasswordToken = resetPasswordToken;
   // Sets the password expiration date.
   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
   return resetPasswordToken;

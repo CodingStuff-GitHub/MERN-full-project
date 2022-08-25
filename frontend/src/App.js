@@ -10,9 +10,12 @@ import LoginSignup from "./components/User/LoginSignup";
 import { useDispatch } from "react-redux";
 import { fetchUserLoad } from "./state_management/user/userSlice";
 import { useCookies } from "react-cookie";
-import Account from "./components/Account/Account";
+import Account from "./components/User/Account";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import UpdateProfile from "./components/User/UpdateProfile";
+import ResetPassword from "./components/User/ResetPassword";
+import ForgotPassword from "./components/User/ForgotPassword";
+import SetNewPassword from "./components/User/SetNewPassword";
 
 function App() {
   const dispatch = useDispatch();
@@ -92,7 +95,22 @@ function App() {
             </>
           }
         />
-
+        <Route
+          path="/forgot"
+          element={
+            <>
+              <ForgotPassword />
+            </>
+          }
+        />
+        <Route
+          path="/setNewPassword/:token"
+          element={
+            <>
+              <SetNewPassword />
+            </>
+          }
+        />
         <Route path="/account" element={<ProtectedRoute />}>
           <Route
             path="/account"
@@ -110,6 +128,16 @@ function App() {
               <>
                 <NavBar />
                 <UpdateProfile />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/account/resetPassword"
+            element={
+              <>
+                <NavBar />
+                <ResetPassword />
                 <Footer />
               </>
             }

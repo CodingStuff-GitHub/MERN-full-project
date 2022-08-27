@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSingleProduct } from "../../state_management/product/singleProductSlice";
@@ -29,6 +29,18 @@ const ProductDetails = () => {
         Out of Stock
       </span>
     );
+  const [quantity, setquantity] = useState(1);
+  const minusCount = () => {
+    if (quantity > 1) {
+      setquantity(quantity - 1);
+    }
+  };
+  const addCount = () => {
+    if (quantity < product.stock) {
+      setquantity(quantity + 1);
+    }
+  };
+
   return (
     <Fragment>
       {loading ? <Loader /> : null}
@@ -77,19 +89,28 @@ const ProductDetails = () => {
 
               {/* Qunatity Picker */}
               <div className="flex mt-4 mb-4">
-                <div>
-                  <label
-                    htmlFor="default-input"
-                    className="block text-sm font-medium text-gray-900 dark:text-gray-300"
-                  ></label>
-                  <input
-                    type="Number"
-                    id="default-input"
-                    placeholder={1}
-                    min={1}
-                    max={5}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  />
+                <div className="flex flex-row justify-between">
+                  <div className="flex">
+                    <span
+                      onClick={minusCount}
+                      className="py-2.5 h-full px-5 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    >
+                      -
+                    </span>
+                    <input
+                      readOnly
+                      id="counter"
+                      aria-label="input"
+                      className="py-2.5 h-full text-center w-14 mb-2 text-sm font-medium cursor-default text-gray-900 focus:outline-none bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                      value={quantity}
+                    />
+                    <span
+                      onClick={addCount}
+                      className="py-2.5 h-full px-5 mb-2 text-sm font-medium cursor-pointer text-gray-900 focus:outline-none bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    >
+                      +
+                    </span>
+                  </div>
                 </div>
                 {/* Add to Cart button */}
                 <button

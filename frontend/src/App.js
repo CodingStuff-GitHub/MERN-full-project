@@ -16,6 +16,7 @@ import UpdateProfile from "./components/User/UpdateProfile";
 import ResetPassword from "./components/User/ResetPassword";
 import ForgotPassword from "./components/User/ForgotPassword";
 import SetNewPassword from "./components/User/SetNewPassword";
+import Cart from "./components/Cart/Cart";
 
 function App() {
   const dispatch = useDispatch();
@@ -100,6 +101,14 @@ function App() {
           element={
             <>
               <ForgotPassword />
+            </>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <>
+              <Cart />
             </>
           }
         />

@@ -14,10 +14,12 @@ const links = {
   about: "/about",
   search: "/search",
   sign: "/sign",
+  cart: "/cart",
 };
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const { isAuthenticated } = useSelector((state) => state.userStore);
+  const { numberOfItemsinCart } = useSelector((state) => state.cartStore);
   return (
     <>
       <div className="dark:bg-gray-900">
@@ -133,18 +135,40 @@ const NavBar = () => {
                   </button>
                 </Link>
                 {/* Add to Cart Icon */}
-                <Link to={links.home}>
-                  <button
-                    aria-label="view cart"
-                    className="text-gray-800 dark:hover:text-gray-300 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800"
-                  >
-                    <img
-                      className="justify-center flex align-middle p-2 hover:bg-gray-300 rounded-full h-10 w-10"
-                      src={CartIcon}
-                      alt="cart"
-                    />
-                  </button>
-                </Link>
+
+                {numberOfItemsinCart ? (
+                  <>
+                    {/* Add to Cart Icon */}
+                    <Link to={links.cart}>
+                      <button
+                        aria-label="view cart"
+                        className="translate-y-0.5 text-gray-800 dark:hover:text-gray-300 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800"
+                      >
+                        <img
+                          className="justify-center flex align-middle p-2 hover:bg-gray-300 rounded-full h-10 w-10"
+                          src={CartIcon}
+                          alt="cart"
+                        />
+                      </button>
+                    </Link>
+                    <div class="absolute translate-x-12 -translate-y-4 inline-flex justify-center items-center w-6 h-6 text-xs font-bold text-black  rounded-full  dark:border-gray-900">
+                      {numberOfItemsinCart}
+                    </div>
+                  </>
+                ) : (
+                  <Link to={links.cart}>
+                    <button
+                      aria-label="view cart"
+                      className="text-gray-800 dark:hover:text-gray-300 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800"
+                    >
+                      <img
+                        className="justify-center flex align-middle p-2 hover:bg-gray-300 rounded-full h-10 w-10"
+                        src={CartIcon}
+                        alt="cart"
+                      />
+                    </button>
+                  </Link>
+                )}
 
                 {/* Profile Icon */}
                 {isAuthenticated ? (

@@ -21,10 +21,13 @@ export const registerUser = asyncPromiseError(async (req, res, _next) => {
     email: email,
     password: password,
     avatar: {
-      public_id: myCloud.public_id || "Sample Public ID",
-      url: myCloud.secure_url || "Sample URI",
+      public_id: myCloud.public_id || "1144760_bfwejx",
+      url:
+        myCloud.secure_url ||
+        "https://res.cloudinary.com/dntjzhzqs/image/upload/v1661841079/1144760_bfwejx.png",
     },
   });
+  console.log(cloudinary.image("1144760_bfwejx.png"));
   jwtCookie(user, 201, res);
 });
 

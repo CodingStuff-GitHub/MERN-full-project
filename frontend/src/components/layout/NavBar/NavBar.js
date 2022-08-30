@@ -151,7 +151,7 @@ const NavBar = () => {
                         />
                       </button>
                     </Link>
-                    <div class="absolute translate-x-12 -translate-y-4 inline-flex justify-center items-center w-6 h-6 text-xs font-bold text-black  rounded-full  dark:border-gray-900">
+                    <div className="absolute translate-x-12 -translate-y-4 inline-flex justify-center items-center w-6 h-6 text-xs font-bold text-black  rounded-full  dark:border-gray-900">
                       {numberOfItemsinCart}
                     </div>
                   </>

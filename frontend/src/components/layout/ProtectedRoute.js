@@ -2,9 +2,14 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ redirectTo }) => {
   const { loading, isAuthenticated } = useSelector((state) => state.userStore);
-  return !loading && isAuthenticated ? <Outlet /> : <Navigate to="/sign" />;
+  const urlToRedirect = redirectTo ? `/sign?redirect=${redirectTo}` : "/sign";
+  return !loading && isAuthenticated ? (
+    <Outlet />
+  ) : (
+    <Navigate to={urlToRedirect} />
+  );
 };
 
 export default ProtectedRoute;

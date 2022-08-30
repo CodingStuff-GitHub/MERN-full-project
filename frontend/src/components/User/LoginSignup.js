@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import MainLogo from "../../images/logo.svg";
 import profile from "../../images/profile.svg";
 import { useSelector, useDispatch } from "react-redux";
@@ -37,12 +37,17 @@ const LoginSignup = () => {
   const { loading, err, isAuthenticated } = useSelector(
     (state) => state.userStore
   );
-
+  const [searchParams] = useSearchParams();
   useEffect(() => {
+    const redirect = searchParams.get("redirect");
     if (isAuthenticated) {
-      navigate({
-        pathname: "/account",
-      });
+      !redirect
+        ? navigate({
+            pathname: "/account",
+          })
+        : navigate({
+            pathname: "/" + redirect,
+          });
     }
     if (err) {
       loginEmailRef.current.classList.remove("border-gray-300");
@@ -57,7 +62,7 @@ const LoginSignup = () => {
       loginPasswordRef.current.classList.remove("border-red-500");
       setAlertOpen(false);
     }
-  }, [err, isAuthenticated, navigate]);
+  }, [err, isAuthenticated, navigate, searchParams]);
 
   const loginSubmit = (e) => {
     e.preventDefault();
@@ -124,6 +129,7 @@ const LoginSignup = () => {
   return (
     <>
       <Metadata title="ExOFusion Account" />
+      <div>Here : </div>
       <section className="h-screen bg-gray-50 dark:bg-gray-900 py-8">
         <div className="relative flex flex-col items-center justify-center mx-auto ">
           <Link

@@ -152,6 +152,20 @@ function App() {
             }
           />
         </Route>
+        <Route
+          path="/checkout"
+          element={<ProtectedRoute redirectTo={"checkout/shipping"} />}
+        >
+          <Route
+            path="/checkout/shipping"
+            element={
+              <>
+                <NavBar />
+                <Footer />
+              </>
+            }
+          />
+        </Route>
       </Routes>
     </Router>
   );

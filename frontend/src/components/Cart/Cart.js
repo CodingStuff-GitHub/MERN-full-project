@@ -2,18 +2,18 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRemoveFromCart } from "../../state_management/cart/addToCartSlice";
-
+import ExclaimationMark from "../../images/exclaimation-mark.svg";
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { productsInCart, grandTotal } = useSelector(
+  const { numberOfItemsinCart, productsInCart, grandTotal } = useSelector(
     (state) => state.cartStore
   );
   const removeItem = (id) => {
     dispatch(fetchRemoveFromCart({ id }));
   };
-  return (
+  return numberOfItemsinCart ? (
     <>
       <div
         className="w-full h-full bg-black bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed sticky-0"
@@ -122,9 +122,9 @@ const Cart = () => {
                   </div>
                   <div className="flex items-center justify-between pt-5">
                     <p className="text-base leading-none text-gray-800">
-                      Shipping
+                      Discount
                     </p>
-                    <p className="text-base leading-none text-gray-800">FREE</p>
+                    <p className="text-base leading-none text-gray-800">0</p>
                   </div>
                   <div className="flex items-center justify-between pt-5">
                     <p className="text-base leading-none text-gray-800">
@@ -142,11 +142,90 @@ const Cart = () => {
                       ₹{grandTotal}
                     </p>
                   </div>
-                  <button className="text-base leading-none w-full py-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium rounded-lg">
+                  <button
+                    onClick={() => {
+                      navigate("/checkout/shipping");
+                    }}
+                    className="text-base leading-none w-full py-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium rounded-lg"
+                  >
                     Checkout
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  ) : (
+    <>
+      <div
+        className="w-full h-full bg-black bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed sticky-0"
+        id="chec-div"
+      >
+        <div
+          className="w-full absolute z-10 right-0 h-full overflow-x-hidden transform translate-x-0 transition ease-in-out duration-700"
+          id="checkout"
+        >
+          <div className="flex md:flex-row flex-col justify-end" id="cart">
+            {/*Cart Items*/}
+            <div
+              className=" w-full md:pl-10 pl-4 pr-10 md:pr-4 md:py-12 py-8 bg-white overflow-y-auto overflow-x-hidden h-screen"
+              id="scroll"
+            >
+              {" "}
+              <div
+                className="flex items-center pb-2 text-gray-500 hover:text-gray-600 cursor-pointer"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon icon-tabler icon-tabler-chevron-left"
+                  width={16}
+                  height={16}
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <polyline points="15 6 9 12 15 18" />
+                </svg>
+                <p className="text-sm pl-2 leading-none">Back To Home</p>
+              </div>
+              <p className="text-5xl font-black leading-10  mb-14 text-gray-800 pt-3">
+                Cart
+              </p>
+              {/* All Items in Cart */}
+              <section className="bg-white dark:bg-gray-900">
+                <div className=" flex py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+                  <div className="mx-auto max-w-screen-sm text-center">
+                    <img
+                      src={ExclaimationMark}
+                      alt="ExOFusion Logo"
+                      className="mb-4 mx-auto w-40 h-40"
+                    />
+                    <p className="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">
+                      Your basket is empty
+                    </p>
+                    <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+                      Add some products{" "}
+                    </p>
+                    <div
+                      className="flex items-center pb-2 text-gray-500 hover:text-gray-600 cursor-pointer"
+                      onClick={() => {
+                        navigate("/");
+                      }}
+                    >
+                      <p className=" mx-auto pl-2 leading-none">Back To Home</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
         </div>

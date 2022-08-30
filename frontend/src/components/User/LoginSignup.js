@@ -129,7 +129,6 @@ const LoginSignup = () => {
   return (
     <>
       <Metadata title="ExOFusion Account" />
-      <div>Here : </div>
       <section className="h-screen bg-gray-50 dark:bg-gray-900 py-8">
         <div className="relative flex flex-col items-center justify-center mx-auto ">
           <Link

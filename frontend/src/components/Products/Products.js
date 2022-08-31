@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import Metadata from "../layout/Metadata";
 
-const categoryList = ["Toy", "Men", "Mobile", "Laptop", "Food"];
+const categoryList = ["Toy", "Mobile", "Laptop", "Food"];
 const Products = () => {
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);

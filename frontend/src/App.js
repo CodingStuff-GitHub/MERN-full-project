@@ -17,6 +17,8 @@ import ResetPassword from "./components/User/ResetPassword";
 import ForgotPassword from "./components/User/ForgotPassword";
 import SetNewPassword from "./components/User/SetNewPassword";
 import Cart from "./components/Cart/Cart";
+import ProgressSteps from "./components/layout/ProgressSteps/ProgressSteps";
+import Shipping from "./components/Checkout/Shipping";
 
 function App() {
   const dispatch = useDispatch();
@@ -161,6 +163,28 @@ function App() {
             element={
               <>
                 <NavBar />
+                <ProgressSteps index={0} />
+                <Shipping />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/checkout/confirm"
+            element={
+              <>
+                <NavBar />
+                <ProgressSteps index={1} />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/checkout/payment"
+            element={
+              <>
+                <NavBar />
+                <ProgressSteps index={2} />
                 <Footer />
               </>
             }

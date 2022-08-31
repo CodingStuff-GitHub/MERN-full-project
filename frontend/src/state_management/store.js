@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { addToCartReducer } from "./cart/addToCartSlice";
+import { shippingInfoReducer } from "./checkout/shippingSlice";
 import { productReducer } from "./product/productSlice";
 import { singleProductReducer } from "./product/singleProductSlice";
 import { updateReducer } from "./user/updateSlice";
@@ -12,5 +13,6 @@ export const store = configureStore({
     userStore: userReducer,
     updateStore: updateReducer,
     cartStore: addToCartReducer,
+    shippingInfoStore: shippingInfoReducer,
   },
 });

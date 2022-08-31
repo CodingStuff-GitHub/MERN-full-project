@@ -54,7 +54,7 @@ export const updateProduct = AsyncPromiseError(async (req, res, next) => {
     return next(new ErrorHandler("Product Not Found", 404));
   }
   // Finds a product and updates it.
-  product = await Product.findOneAndUpdate(req.params.id, req.body, {
+  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });

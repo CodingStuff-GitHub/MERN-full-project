@@ -20,7 +20,7 @@ const categoryList = ["Toy", "Mobile", "Laptop", "Food"];
 const Products = () => {
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const [priceValue, setPriceValue] = useState([0, 25000]);
+  const [priceValue, setPriceValue] = useState([0, 250000]);
   const [category, setCategory] = useState("");
   const [ratings, setRatings] = useState(0);
 
@@ -35,7 +35,7 @@ const Products = () => {
       currentPage: currentPage || 1,
       keyword: searchParams.get("keyword") || "",
       category: category || "",
-      priceValue: priceValue || [0, 25000],
+      priceValue: priceValue || [0, 250000],
       rating: ratings || 0,
     };
     dispatch(fetchProducts(options));
@@ -90,7 +90,7 @@ const Products = () => {
                   valueLabelDisplay="auto"
                   disableSwap
                   min={0}
-                  max={25000}
+                  max={250000}
                   step={1000}
                 />
               </div>

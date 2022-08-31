@@ -14,7 +14,7 @@ export const fetchProducts = createAsyncThunk(
       category: category || "",
       keyword: keyword || "",
       currentPage: currentPage || 1,
-      priceValue: priceValue || [0, 25000],
+      priceValue: priceValue || [0, 250000],
       rating: rating || 0,
     };
     let url = "";

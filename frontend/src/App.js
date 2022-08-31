@@ -19,6 +19,8 @@ import SetNewPassword from "./components/User/SetNewPassword";
 import Cart from "./components/Cart/Cart";
 import ProgressSteps from "./components/layout/ProgressSteps/ProgressSteps";
 import Shipping from "./components/Checkout/Shipping";
+import Confirm from "./components/Checkout/Confirm";
+import Contact from "./components/Contact/Contact";
 
 function App() {
   const dispatch = useDispatch();
@@ -86,7 +88,9 @@ function App() {
           path="/contact"
           element={
             <>
-              <>Contact Page</>
+              <NavBar />
+              <Contact />
+              <Footer />
             </>
           }
         />
@@ -175,6 +179,7 @@ function App() {
               <>
                 <NavBar />
                 <ProgressSteps index={1} />
+                <Confirm />
                 <Footer />
               </>
             }

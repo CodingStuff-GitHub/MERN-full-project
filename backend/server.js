@@ -1,7 +1,7 @@
 import app from "./app.js";
 import dotenv from "dotenv";
 import cloudinary from "cloudinary";
-import connectDatabase from "./config/databaseConnection.js";
+import connectDatabase from "./config/connectDatabase.js";
 
 // Uncaught Expection Handling
 process.on("uncaughtException", (err) => {

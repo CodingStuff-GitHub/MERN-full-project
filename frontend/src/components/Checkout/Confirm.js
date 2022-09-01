@@ -1,6 +1,28 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { saveConfirmOrderInfo } from "../../state_management/checkout/confirmOrderSlice";
 
 const Confirm = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { numberOfItemsinCart, productsInCart, grandTotal } = useSelector(
+    (state) => state.cartStore
+  );
+  const { shippingInfo } = useSelector((state) => state.shippingInfoStore);
+  const delivaryAddress =
+    shippingInfo.address +
+    ", " +
+    shippingInfo.stateName +
+    ", " +
+    shippingInfo.countryName +
+    " - " +
+    shippingInfo.pincode;
+  const googleMapUrl = `https://www.google.com/maps?q=${delivaryAddress}&output=embed`;
+  const saveOrderDetails = () => {
+    console.log("running function saveOrderDetails");
+    dispatch(saveConfirmOrderInfo({ grandTotal }));
+  };
   return (
     <>
       <div className="2xl:container 2xl:mx-auto py-14 px-4 md:px-6 xl:px-20">
@@ -9,280 +31,51 @@ const Confirm = () => {
             <h3 className="text-3xl xl:text-4xl font-semibold leading-7 xl:leading-9 w-full  md:text-left text-gray-800">
               Order Summary
             </h3>
+            <p className="text-base leading-none mt-4 text-gray-800">
+              Number of Items :{" "}
+              <span className="font-semibold">{numberOfItemsinCart}</span>
+            </p>
             {/* Items Summary Div */}
             <div className="flex justify-center items-center w-full mt-8  flex-col space-y-4 ">
-              <div className="flex md:flex-row justify-start items-start md:items-center  border border-gray-200 w-full">
-                <div className="w-40 md:w-32">
-                  <img
-                    className="hidden md:block"
-                    src="https://i.ibb.co/wWp4m6W/Rectangle-8.png"
-                    alt="girl-in-red-dress"
-                  />
-                  <img
-                    className="md:hidden "
-                    src="https://i.ibb.co/f8pyz8q/Rectangle-8.png"
-                    alt="girl-in-red-dress"
-                  />
-                </div>
-                <div className="flex justify-start md:justify-between items-start md:items-center  flex-col md:flex-row w-full p-4 md:px-8">
-                  <div className="flex flex-col md:flex-shrink-0  justify-start items-start">
-                    <h3 className="text-lg md:text-xl  w-full font-semibold leading-6 md:leading-5  text-gray-800">
-                      Premium Quaility Red Dress
-                    </h3>
-                    <div className="flex flex-row justify-start  space-x-4 md:space-x-6 items-start mt-4 ">
-                      <p className="text-sm leading-none text-gray-600">
-                        Size: <span className="text-gray-800"> Small</span>
-                      </p>
-                      <p className="text-sm leading-none text-gray-600">
-                        Quantity: <span className="text-gray-800"> 01</span>
+              {productsInCart.map((product) => (
+                <div className="flex md:flex-row justify-start items-start md:items-center  border border-gray-200 w-full">
+                  <div className="w-40 md:w-32">
+                    <img
+                      className="block w-full h-full object-center object-cover aspect-square"
+                      src={product.images[0].url}
+                      alt={product.name}
+                    />
+                  </div>
+                  <div className="flex justify-start md:justify-between items-start md:items-center  flex-col md:flex-row w-full p-4 md:px-8">
+                    <div className="flex flex-col md:flex-shrink-0  justify-start items-start">
+                      <h3 className="text-lg md:text-xl  w-full font-semibold leading-6 md:leading-5  text-gray-800">
+                        {product.name}
+                      </h3>
+                      <div className="flex flex-row justify-start  space-x-4 md:space-x-6 items-start mt-4 ">
+                        <p className="text-sm leading-none text-gray-600">
+                          Category:{" "}
+                          <span className="text-gray-800">
+                            {" "}
+                            {product.category}
+                          </span>
+                        </p>
+                        <p className="text-sm leading-none text-gray-600">
+                          Quantity:{" "}
+                          <span className="text-gray-800">
+                            {" "}
+                            {product.quantity}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex mt-4 md:mt-0 md:justify-end items-center w-full ">
+                      <p className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-gray-800">
+                        ₹{product.price}
                       </p>
                     </div>
                   </div>
-                  <div className="flex mt-4 md:mt-0 md:justify-end items-center w-full ">
-                    <p className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-gray-800">
-                      $28.00
-                    </p>
-                  </div>
                 </div>
-              </div>
-              <div className="flex md:flex-row justify-start items-start md:items-center  border border-gray-200 w-full">
-                <div className="w-40 md:w-32">
-                  <img
-                    className="hidden md:block"
-                    src="https://i.ibb.co/3ftbsMT/Rectangle-8-1.png"
-                    alt="girl-in-yellow-dress"
-                  />
-                  <img
-                    className="md:hidden "
-                    src="https://i.ibb.co/D79dzHg/Rectangle-8.png"
-                    alt="girl-in-yellow-dress"
-                  />
-                </div>
-                <div className="flex justify-start md:justify-between items-start md:items-center  flex-col md:flex-row w-full p-4 md:px-8">
-                  <div className="flex flex-col md:flex-shrink-0  justify-start items-start">
-                    <h3 className="text-lg md:text-xl font-semibold leading-6 md:leading-5  text-gray-800">
-                      Premium Quaility Yellow Dress
-                    </h3>
-                    <div className="flex flex-row justify-start  space-x-4 md:space-x-6 items-start mt-4 ">
-                      <p className="text-sm leading-none text-gray-600">
-                        Size: <span className="text-gray-800"> Small</span>
-                      </p>
-                      <p className="text-sm leading-none text-gray-600">
-                        Quantity: <span className="text-gray-800"> 01</span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex mt-4 md:mt-0 md:justify-end items-center w-full ">
-                    <p className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-gray-800">
-                      $28.00
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex md:flex-row justify-start items-start md:items-center  border border-gray-200 w-full">
-                <div className="w-40 md:w-32">
-                  <img
-                    className="hidden md:block"
-                    src="https://i.ibb.co/C7M7Mvx/Rectangle-8-2.png"
-                    alt="girl-in-white-dress"
-                  />
-                  <img
-                    className="md:hidden "
-                    src="https://i.ibb.co/MsbCZNJ/Rectangle-8.png"
-                    alt="girl-in-white-dress"
-                  />
-                </div>
-                <div className="flex justify-start md:justify-between items-start md:items-center  flex-col md:flex-row w-full p-4 md:px-8">
-                  <div className="flex flex-col md:flex-shrink-0  justify-start items-start">
-                    <h3 className="text-lg md:text-xl  font-semibold leading-6 md:leading-5  text-gray-800">
-                      Premium Quaility White Dress
-                    </h3>
-                    <div className="flex flex-row justify-start  space-x-4 md:space-x-6 items-start mt-4 ">
-                      <p className="text-sm leading-none text-gray-600">
-                        Size: <span className="text-gray-800"> Small</span>
-                      </p>
-                      <p className="text-sm leading-none text-gray-600">
-                        Quantity: <span className="text-gray-800"> 01</span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex mt-4 md:mt-0 md:justify-end items-center w-full ">
-                    <p className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-gray-800">
-                      $28.00
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex md:flex-row justify-start items-start md:items-center  border border-gray-200 w-full">
-                <div className="w-40 md:w-32">
-                  <img
-                    className="hidden md:block"
-                    src="https://i.ibb.co/C7M7Mvx/Rectangle-8-2.png"
-                    alt="girl-in-white-dress"
-                  />
-                  <img
-                    className="md:hidden "
-                    src="https://i.ibb.co/MsbCZNJ/Rectangle-8.png"
-                    alt="girl-in-white-dress"
-                  />
-                </div>
-                <div className="flex justify-start md:justify-between items-start md:items-center  flex-col md:flex-row w-full p-4 md:px-8">
-                  <div className="flex flex-col md:flex-shrink-0  justify-start items-start">
-                    <h3 className="text-lg md:text-xl  font-semibold leading-6 md:leading-5  text-gray-800">
-                      Premium Quaility White Dress
-                    </h3>
-                    <div className="flex flex-row justify-start  space-x-4 md:space-x-6 items-start mt-4 ">
-                      <p className="text-sm leading-none text-gray-600">
-                        Size: <span className="text-gray-800"> Small</span>
-                      </p>
-                      <p className="text-sm leading-none text-gray-600">
-                        Quantity: <span className="text-gray-800"> 01</span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex mt-4 md:mt-0 md:justify-end items-center w-full ">
-                    <p className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-gray-800">
-                      $28.00
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex md:flex-row justify-start items-start md:items-center  border border-gray-200 w-full">
-                <div className="w-40 md:w-32">
-                  <img
-                    className="hidden md:block"
-                    src="https://i.ibb.co/C7M7Mvx/Rectangle-8-2.png"
-                    alt="girl-in-white-dress"
-                  />
-                  <img
-                    className="md:hidden "
-                    src="https://i.ibb.co/MsbCZNJ/Rectangle-8.png"
-                    alt="girl-in-white-dress"
-                  />
-                </div>
-                <div className="flex justify-start md:justify-between items-start md:items-center  flex-col md:flex-row w-full p-4 md:px-8">
-                  <div className="flex flex-col md:flex-shrink-0  justify-start items-start">
-                    <h3 className="text-lg md:text-xl  font-semibold leading-6 md:leading-5  text-gray-800">
-                      Premium Quaility White Dress
-                    </h3>
-                    <div className="flex flex-row justify-start  space-x-4 md:space-x-6 items-start mt-4 ">
-                      <p className="text-sm leading-none text-gray-600">
-                        Size: <span className="text-gray-800"> Small</span>
-                      </p>
-                      <p className="text-sm leading-none text-gray-600">
-                        Quantity: <span className="text-gray-800"> 01</span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex mt-4 md:mt-0 md:justify-end items-center w-full ">
-                    <p className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-gray-800">
-                      $28.00
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex md:flex-row justify-start items-start md:items-center  border border-gray-200 w-full">
-                <div className="w-40 md:w-32">
-                  <img
-                    className="hidden md:block"
-                    src="https://i.ibb.co/C7M7Mvx/Rectangle-8-2.png"
-                    alt="girl-in-white-dress"
-                  />
-                  <img
-                    className="md:hidden "
-                    src="https://i.ibb.co/MsbCZNJ/Rectangle-8.png"
-                    alt="girl-in-white-dress"
-                  />
-                </div>
-                <div className="flex justify-start md:justify-between items-start md:items-center  flex-col md:flex-row w-full p-4 md:px-8">
-                  <div className="flex flex-col md:flex-shrink-0  justify-start items-start">
-                    <h3 className="text-lg md:text-xl  font-semibold leading-6 md:leading-5  text-gray-800">
-                      Premium Quaility White Dress
-                    </h3>
-                    <div className="flex flex-row justify-start  space-x-4 md:space-x-6 items-start mt-4 ">
-                      <p className="text-sm leading-none text-gray-600">
-                        Size: <span className="text-gray-800"> Small</span>
-                      </p>
-                      <p className="text-sm leading-none text-gray-600">
-                        Quantity: <span className="text-gray-800"> 01</span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex mt-4 md:mt-0 md:justify-end items-center w-full ">
-                    <p className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-gray-800">
-                      $28.00
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex md:flex-row justify-start items-start md:items-center  border border-gray-200 w-full">
-                <div className="w-40 md:w-32">
-                  <img
-                    className="hidden md:block"
-                    src="https://i.ibb.co/C7M7Mvx/Rectangle-8-2.png"
-                    alt="girl-in-white-dress"
-                  />
-                  <img
-                    className="md:hidden "
-                    src="https://i.ibb.co/MsbCZNJ/Rectangle-8.png"
-                    alt="girl-in-white-dress"
-                  />
-                </div>
-                <div className="flex justify-start md:justify-between items-start md:items-center  flex-col md:flex-row w-full p-4 md:px-8">
-                  <div className="flex flex-col md:flex-shrink-0  justify-start items-start">
-                    <h3 className="text-lg md:text-xl  font-semibold leading-6 md:leading-5  text-gray-800">
-                      Premium Quaility White Dress
-                    </h3>
-                    <div className="flex flex-row justify-start  space-x-4 md:space-x-6 items-start mt-4 ">
-                      <p className="text-sm leading-none text-gray-600">
-                        Size: <span className="text-gray-800"> Small</span>
-                      </p>
-                      <p className="text-sm leading-none text-gray-600">
-                        Quantity: <span className="text-gray-800"> 01</span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex mt-4 md:mt-0 md:justify-end items-center w-full ">
-                    <p className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-gray-800">
-                      $28.00
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex md:flex-row justify-start items-start md:items-center  border border-gray-200 w-full">
-                <div className="w-40 md:w-32">
-                  <img
-                    className="hidden md:block"
-                    src="https://i.ibb.co/C7M7Mvx/Rectangle-8-2.png"
-                    alt="girl-in-white-dress"
-                  />
-                  <img
-                    className="md:hidden "
-                    src="https://i.ibb.co/MsbCZNJ/Rectangle-8.png"
-                    alt="girl-in-white-dress"
-                  />
-                </div>
-                <div className="flex justify-start md:justify-between items-start md:items-center  flex-col md:flex-row w-full p-4 md:px-8">
-                  <div className="flex flex-col md:flex-shrink-0  justify-start items-start">
-                    <h3 className="text-lg md:text-xl  font-semibold leading-6 md:leading-5  text-gray-800">
-                      Premium Quaility White Dress
-                    </h3>
-                    <div className="flex flex-row justify-start  space-x-4 md:space-x-6 items-start mt-4 ">
-                      <p className="text-sm leading-none text-gray-600">
-                        Size: <span className="text-gray-800"> Small</span>
-                      </p>
-                      <p className="text-sm leading-none text-gray-600">
-                        Quantity: <span className="text-gray-800"> 01</span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex mt-4 md:mt-0 md:justify-end items-center w-full ">
-                    <p className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-gray-800">
-                      $28.00
-                    </p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
             {/* Billing Summary Div */}
             <div className="flex flex-col-reverse justify-center w-full xl:flex-row">
@@ -290,10 +83,22 @@ const Confirm = () => {
                 <div className="flex justify-start items-start flex-col md:flex-row  w-full md:w-auto space-y-8 md:space-y-0 md:space-x-14 xl:space-x-8  lg:w-full">
                   <div className="flex jusitfy-start items-start flex-col space-y-2">
                     <p className="text-base font-semibold leading-4  text-gray-800">
-                      Billing Address
+                      Ordered by:
                     </p>
                     <p className="text-sm leading-5 text-gray-600">
-                      180 North King Street, Northhampton MA 1060
+                      {shippingInfo.firstName +
+                        " " +
+                        shippingInfo.lastName +
+                        " - " +
+                        shippingInfo.phoneNumber}
+                    </p>
+                  </div>
+                  <div className="flex jusitfy-start items-start flex-col space-y-2">
+                    <p className="text-base font-semibold leading-4  text-gray-800">
+                      Shipping Address
+                    </p>
+                    <p className="text-sm leading-5 text-gray-600">
+                      {delivaryAddress}
                     </p>
                   </div>
                 </div>
@@ -304,25 +109,23 @@ const Confirm = () => {
                         Subtotal
                       </p>
                       <p className="text-base leading-4 text-gray-600">
-                        $56.00
+                        ₹{grandTotal}
                       </p>
                     </div>
                     <div className="flex justify-between  w-full">
                       <p className="text-base leading-4 text-gray-800">
                         Discount{" "}
-                        <span className="bg-gray-200 p-1 text-xs font-medium leading-3  text-gray-800">
+                        {/* <span className="bg-gray-200 p-1 text-xs font-medium leading-3  text-gray-800">
                           STUDENT
-                        </span>
+                        </span> */}
                       </p>
-                      <p className="text-base leading-4 text-gray-600">
-                        -$28.00 (50%)
-                      </p>
+                      <p className="text-base leading-4 text-gray-600">0</p>
                     </div>
                     <div className="flex justify-between  w-full">
                       <p className="text-base leading-4 text-gray-800">
                         Shipping
                       </p>
-                      <p className="text-base leading-4 text-gray-600">$8.00</p>
+                      <p className="text-base leading-4 text-gray-600">FREE</p>
                     </div>
                   </div>
                   <div className="flex justify-between items-center w-full">
@@ -330,12 +133,18 @@ const Confirm = () => {
                       Total
                     </p>
                     <p className="text-base font-semibold leading-4 text-gray-600">
-                      $36.00
+                      ₹{grandTotal}
                     </p>
                   </div>
                   <div className="flex w-full justify-center items-center pt-1 md:pt-4  xl:pt-8 space-y-6 md:space-y-8 flex-col">
-                    <button className="py-5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800  w-full text-base font-medium leading-4 text-white bg-gray-800 hover:bg-black">
-                      Track Your Order
+                    <button
+                      onClick={() => {
+                        saveOrderDetails();
+                        navigate("/checkout/payment");
+                      }}
+                      className="py-5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800  w-full text-base font-medium leading-4 text-white bg-gray-800 hover:bg-black"
+                    >
+                      Proceed to Payment
                     </button>
                   </div>
                 </div>
@@ -343,7 +152,7 @@ const Confirm = () => {
               <div className="px-10 basis-1/2 mt-8 xl:mt-10">
                 <iframe
                   title="Contact"
-                  src="https://www.google.com/maps?q=Terna&output=embed"
+                  src={googleMapUrl}
                   width="100%"
                   height="100%"
                   allowfullscreen=""

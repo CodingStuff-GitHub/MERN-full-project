@@ -11,7 +11,6 @@ const confirmOrderSlice = createSlice({
   initialState,
   reducers: {
     saveConfirmOrderInfo: (state, action) => {
-      console.log(action.payload);
       state.orderInfo = action.payload;
       sessionStorage.setItem("orderDetails", JSON.stringify(state.orderInfo));
     },

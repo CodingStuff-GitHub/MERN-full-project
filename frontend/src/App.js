@@ -21,6 +21,7 @@ import ProgressSteps from "./components/layout/ProgressSteps/ProgressSteps";
 import Shipping from "./components/Checkout/Shipping";
 import Confirm from "./components/Checkout/Confirm";
 import Contact from "./components/Contact/Contact";
+import Payment from "./components/Checkout/Payment";
 
 function App() {
   const dispatch = useDispatch();
@@ -189,6 +190,7 @@ function App() {
               <>
                 <NavBar />
                 <ProgressSteps index={2} />
+                <Payment />
                 <Footer />
               </>
             }

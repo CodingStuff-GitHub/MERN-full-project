@@ -115,9 +115,6 @@ const Confirm = () => {
                     <div className="flex justify-between  w-full">
                       <p className="text-base leading-4 text-gray-800">
                         Discount{" "}
-                        {/* <span className="bg-gray-200 p-1 text-xs font-medium leading-3  text-gray-800">
-                          STUDENT
-                        </span> */}
                       </p>
                       <p className="text-base leading-4 text-gray-600">0</p>
                     </div>
@@ -142,7 +139,7 @@ const Confirm = () => {
                         saveOrderDetails();
                         navigate("/checkout/payment");
                       }}
-                      className="py-5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800  w-full text-base font-medium leading-4 text-white bg-gray-800 hover:bg-black"
+                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 py-5 focus:outline-none focus:ring-offset-2  w-full text-base font-medium leading-4"
                     >
                       Proceed to Payment
                     </button>

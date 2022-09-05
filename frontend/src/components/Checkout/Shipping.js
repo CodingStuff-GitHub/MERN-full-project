@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingInfo } from "../../state_management/checkout/shippingSlice";
 import { Country, State } from "country-state-city";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const Shipping = () => {
   const dispatch = useDispatch();
@@ -10,10 +12,16 @@ const Shipping = () => {
   const { numberOfItemsinCart, grandTotal } = useSelector(
     (state) => state.cartStore
   );
-  const [countryDropdown, setCountryDropdown] = useState(false);
-  const [stateDropdown, setStateDropdown] = useState(false);
-  const [countryName, setCountryName] = useState("Country");
-  const [stateName, setStateName] = useState("State");
+  const [countries] = useState({
+    options: Country.getAllCountries(),
+    getOptionLabel: (option) => option.name,
+  });
+  const [allStates, setAllStates] = useState({
+    options: [],
+  });
+
+  const [countryName, setCountryName] = useState("");
+  const [stateName, setStateName] = useState("");
   const [countryCode, setCountryCode] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -23,15 +31,6 @@ const Shipping = () => {
   const [message, setMessage] = useState("");
   const [messageOpen, setMessageOpen] = useState("");
 
-  const HandleCountryName = (e) => {
-    setCountryName(e);
-    setCountryDropdown(false);
-  };
-
-  const HandleStateName = (e) => {
-    setStateName(e);
-    setStateDropdown(false);
-  };
   const HandleProceedingConfirm = () => {
     if (
       firstName === "" ||
@@ -56,6 +55,13 @@ const Shipping = () => {
     };
     dispatch(saveShippingInfo(data));
     return true;
+  };
+
+  const populateStates = (isoCode) => {
+    setAllStates({
+      options: State.getStatesOfCountry(isoCode),
+      getOptionLabel: (option) => option.name,
+    });
   };
 
   return (
@@ -114,121 +120,40 @@ const Shipping = () => {
                 <div className="flex justify-between flex-col sm:flex-row w-full items-start space-y-8 sm:space-y-0 sm:space-x-8">
                   {/* Country*/}
                   <div className="relative w-full">
-                    <p
-                      id="button1"
-                      className=" px-2 border-b border-gray-200 text-left leading-4 text-base text-gray-600 py-4 w-full"
-                    >
-                      {countryName}
-                    </p>
-                    <button
-                      onClick={() => setCountryDropdown(!countryDropdown)}
-                      className="focus:outline-none focus:ring-2 focus:ring-gray-500 rounded-full cursor-pointer absolute bottom-4 right-0"
-                    >
-                      <svg
-                        id="close"
-                        className={` transform ${
-                          countryDropdown ? "rotate-180" : ""
-                        }  `}
-                        width={16}
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 6L8 10L4 6"
-                          stroke="#4B5563"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                    <div
-                      className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${
-                        countryDropdown ? "" : "hidden"
-                      }`}
-                    >
-                      <div className="flex flex-col  w-full">
-                        {" "}
-                        <ul
-                          className="overflow-y-auto py-1 h-48 text-gray-700 dark:text-gray-200"
-                          aria-labelledby="dropdownUsersButton"
-                        >
-                          {Country.getAllCountries().map((singleCountry) => (
-                            <li
-                              tabIndex={0}
-                              key={singleCountry.name}
-                              onClick={() => {
-                                HandleCountryName(singleCountry.name);
-                                setCountryCode(singleCountry.isoCode);
-                                HandleStateName("State");
-                              }}
-                              className="focus:outline-none cursor-pointer px-3 hover:text-white hover:bg-gray-800 focus:bg-gray-800 focus:text-white text-left  text-base text-gray-600 py-2 w-full"
-                            >
-                              {singleCountry.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
+                    <Autocomplete
+                      disablePortal
+                      disableClearable
+                      value={countryName.name}
+                      onChange={(_event, newCountry) => {
+                        setCountryName(newCountry.name);
+                        setCountryCode(newCountry.isoCode);
+                        populateStates(newCountry.isoCode);
+                        setStateName("");
+                      }}
+                      {...countries}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Country" />
+                      )}
+                    />
                   </div>
+
                   {/* State*/}
                   <div className="relative w-full">
-                    <p
-                      id="button1"
-                      className=" px-2 border-b border-gray-200 text-left leading-4 text-base text-gray-600 py-4 w-full"
-                    >
-                      {stateName}
-                    </p>
-                    <button
+                    <Autocomplete
                       disabled={!countryCode}
-                      onClick={() => setStateDropdown(!stateDropdown)}
-                      className="focus:outline-none focus:ring-2 focus:ring-gray-500 rounded-full cursor-pointer absolute bottom-4 right-0"
-                    >
-                      <svg
-                        id="close"
-                        className={` transform ${
-                          stateDropdown ? "rotate-180" : ""
-                        }  `}
-                        width={16}
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 6L8 10L4 6"
-                          stroke="#4B5563"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                    <div
-                      className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${
-                        stateDropdown ? "" : "hidden"
-                      }`}
-                    >
-                      <div className="flex flex-col  w-full">
-                        <ul
-                          className="overflow-y-auto py-1 h-48 text-gray-700 dark:text-gray-200"
-                          aria-labelledby="dropdownUsersButton"
-                        >
-                          {State.getStatesOfCountry(countryCode).map(
-                            (singleState) => (
-                              <li
-                                tabIndex={0}
-                                key={singleState.name}
-                                onClick={() => {
-                                  HandleStateName(singleState.name);
-                                }}
-                                className="focus:outline-none cursor-pointer px-3 hover:text-white hover:bg-gray-800 focus:bg-gray-800 focus:text-white text-left  text-base text-gray-600 py-2 w-full"
-                              >
-                                {singleState.name}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                    </div>
+                      disablePortal
+                      disableClearable
+                      value={stateName.name}
+                      onChange={(_event, newState) => {
+                        setStateName(newState.name);
+                      }}
+                      {...allStates}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => (
+                        <TextField {...params} label="State" />
+                      )}
+                    />
                   </div>
                 </div>
                 {/* PinCode*/}

@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../state_management/product/productSlice";
 import Loader from "../layout/Loader/Loader";
 import ErrorView from "../layout/ErrorPage/ErrorView";
-import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
@@ -36,7 +35,7 @@ const Home = () => {
       setOpen(true);
     }
     dispatch(fetchProducts({}));
-  }, [dispatch]);
+  }, [dispatch, redirectStatus]);
 
   return (
     <Fragment>

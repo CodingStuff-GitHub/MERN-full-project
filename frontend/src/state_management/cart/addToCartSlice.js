@@ -9,6 +9,7 @@ const grandTotalCalculator = () => {
   }
   return grandTotal;
 };
+
 const initialState = {
   loading: false,
   grandTotal: grandTotalCalculator(),
@@ -41,6 +42,15 @@ export const fetchRemoveFromCart = createAsyncThunk(
 const addToCartSlice = createSlice({
   name: "addToCartSlice",
   initialState,
+  reducers: {
+    emptyCart: (state) => {
+      state.grandTotal = 0;
+      state.numberOfItemsinCart = 0;
+      state.productsInCart = [];
+      state.err = "";
+      localStorage.removeItem("productsInCart");
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAddToCart.pending, (state) => {
       state.loading = true;
@@ -93,3 +103,4 @@ const addToCartSlice = createSlice({
 });
 
 export const addToCartReducer = addToCartSlice.reducer;
+export const { emptyCart } = addToCartSlice.actions;

@@ -14,7 +14,11 @@ const confirmOrderSlice = createSlice({
       state.orderInfo = action.payload;
       sessionStorage.setItem("orderDetails", JSON.stringify(state.orderInfo));
     },
+    removeConfirmOrderInfo: (state) => {
+      sessionStorage.removeItem("orderDetails");
+    },
   },
 });
 export const confirmOrderReducer = confirmOrderSlice.reducer;
-export const { saveConfirmOrderInfo } = confirmOrderSlice.actions;
+export const { removeConfirmOrderInfo, saveConfirmOrderInfo } =
+  confirmOrderSlice.actions;

@@ -5,10 +5,12 @@ import ProductCard from "./ProductCard.js";
 import Metadata from "../layout/Metadata";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../state_management/product/productSlice";
+import { removeConfirmOrderInfo } from "../../state_management/checkout/confirmOrderSlice";
 import Loader from "../layout/Loader/Loader";
 import ErrorView from "../layout/ErrorPage/ErrorView";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { emptyCart } from "../../state_management/cart/addToCartSlice";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -33,6 +35,8 @@ const Home = () => {
   useEffect(() => {
     if (redirectStatus === "succeeded") {
       setOpen(true);
+      dispatch(emptyCart());
+      dispatch(removeConfirmOrderInfo());
     }
     dispatch(fetchProducts({}));
   }, [dispatch, redirectStatus]);

@@ -2,26 +2,37 @@ import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import "./Payment.css";
-
+import axios from "axios";
 import CheckoutForm from "./CheckoutForm";
 
 const Payment = () => {
   const [clientSecret, setClientSecret] = useState("");
-  const [publishabaleKey] = useState(
-    "pk_test_51LdxtVSCptcLSVS8PRNENwk7DgZhrL5Slvo5CT0C0KjvlJAT0gWMlSnjM7vHXziqFjcPjsL5hPKPCY3YTz7ftMC800HbiyH7ES"
-  );
-  const stripePromise = loadStripe(publishabaleKey);
+  const [publishableKey, setPublishableKey] = useState("");
+
+  const stripePromise = loadStripe(publishableKey);
   useEffect(() => {
     // Call for Publishabale Key
+    async function fetchPublishableKey() {
+      await axios
+        .get("/api/v1/get-publishable-key")
+        .then((response) => setPublishableKey(response.data.publishableKey));
+    }
 
     // Create PaymentIntent as soon as the page loads
-    fetch("/api/v1/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
+    async function createPaymentIntent() {
+      const configuration = { headers: { "Content-Type": "application/json" } };
+      await axios
+        .post(
+          "/api/v1/create-payment-intent",
+          JSON.parse(sessionStorage.getItem("orderDetails")),
+          configuration
+        )
+        .then((response) => response.data)
+        .then((data) => setClientSecret(data.clientSecret));
+    }
+
+    fetchPublishableKey();
+    createPaymentIntent();
   }, []);
 
   const appearance = {

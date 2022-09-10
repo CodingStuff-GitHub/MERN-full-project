@@ -20,7 +20,6 @@ const Confirm = () => {
     shippingInfo.pincode;
   const googleMapUrl = `https://www.google.com/maps?q=${delivaryAddress}&output=embed`;
   const saveOrderDetails = () => {
-    console.log("running function saveOrderDetails");
     dispatch(saveConfirmOrderInfo({ grandTotal }));
   };
   return (

@@ -29,6 +29,7 @@ const CheckoutForm = () => {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent.status) {
         case "succeeded":
+          //Create an order
           setMessage("Payment succeeded!");
           break;
         case "processing":

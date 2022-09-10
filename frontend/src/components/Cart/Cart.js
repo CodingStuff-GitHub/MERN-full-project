@@ -15,6 +15,7 @@ const Cart = () => {
   };
   return numberOfItemsinCart ? (
     <>
+      {/* Products in the cart */}
       <div
         className="w-full h-full bg-black bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed sticky-0"
         id="chec-div"
@@ -159,6 +160,7 @@ const Cart = () => {
     </>
   ) : (
     <>
+      {/* No Products in the cart */}
       <div
         className="w-full h-full bg-black bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed sticky-0"
         id="chec-div"

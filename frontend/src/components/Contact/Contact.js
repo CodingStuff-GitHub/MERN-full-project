@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Contact = () => {
   return (
     <>
-      <div>Contact</div>
       <iframe
         title="Contact"
         src="https://www.google.com/maps?q=Terna&output=embed"

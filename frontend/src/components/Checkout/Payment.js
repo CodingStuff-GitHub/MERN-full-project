@@ -13,7 +13,7 @@ const Payment = () => {
   useEffect(() => {
     // Call for Publishabale Key
     async function fetchPublishableKey() {
-      await axios
+      return axios
         .get("/api/v1/get-publishable-key")
         .then((response) => setPublishableKey(response.data.publishableKey));
     }
@@ -21,7 +21,7 @@ const Payment = () => {
     // Create PaymentIntent as soon as the page loads
     async function createPaymentIntent() {
       const configuration = { headers: { "Content-Type": "application/json" } };
-      await axios
+      return axios
         .post(
           "/api/v1/create-payment-intent",
           JSON.parse(sessionStorage.getItem("orderDetails")),

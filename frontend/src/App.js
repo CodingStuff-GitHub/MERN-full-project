@@ -22,6 +22,7 @@ import Shipping from "./components/Checkout/Shipping";
 import Confirm from "./components/Checkout/Confirm";
 import Contact from "./components/Contact/Contact";
 import Payment from "./components/Checkout/Payment";
+import OrderCompleted from "./components/Checkout/OrderCompleted";
 
 function App() {
   const dispatch = useDispatch();
@@ -196,6 +197,16 @@ function App() {
             }
           />
         </Route>
+        <Route
+          path="/orderPlaced"
+          element={
+            <>
+              <NavBar />
+              <OrderCompleted />
+              <Footer />
+            </>
+          }
+        />
       </Routes>
     </Router>
   );

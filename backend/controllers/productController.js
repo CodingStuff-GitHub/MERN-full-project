@@ -133,13 +133,14 @@ export const createProductReview = AsyncPromiseError(
 
 //Get all the reviews of a product
 export const getAllReviews = AsyncPromiseError(async (req, res, next) => {
-  const product = await Product.findOne(req.params.productId);
+  const product = await Product.findById(req.query.productId);
   if (!product) {
     return next(new ErrorHandler("Product Not Found", 404));
   }
   res.status(200).json({
     success: true,
     reviews: product.reviews,
+    product,
   });
 });
 

@@ -23,6 +23,7 @@ import Confirm from "./components/Checkout/Confirm";
 import Contact from "./components/Contact/Contact";
 import Payment from "./components/Checkout/Payment";
 import OrderCompleted from "./components/Checkout/OrderCompleted";
+import Orders from "./components/Orders/Orders";
 
 function App() {
   const dispatch = useDispatch();
@@ -138,6 +139,7 @@ function App() {
               </>
             }
           />
+
           <Route
             path="/account/update"
             element={
@@ -203,6 +205,16 @@ function App() {
             <>
               <NavBar />
               <OrderCompleted />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <>
+              <NavBar />
+              <Orders />
               <Footer />
             </>
           }

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const getData = (paymentIntent) => {
@@ -39,7 +39,7 @@ const getData = (paymentIntent) => {
 
 const initialState = {
   loading: false,
-  orderInfo: [],
+  orderInfo: {},
   err: "",
 };
 
@@ -59,21 +59,43 @@ export const fetchCreateOrder = createAsyncThunk(
   }
 );
 
+export const fetchGetOrders = createAsyncThunk(
+  "getOrderTypePrefix",
+  async () => {
+    const configuration = { headers: { "Content-Type": "application/json" } };
+
+    return axios.get(`/api/v1/orders`, configuration).then(
+      (response) => response.data,
+      (error) => {
+        return error.response.data;
+      }
+    );
+  }
+);
 const orderSlice = createSlice({
   name: "orderSlice",
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(fetchCreateOrder.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchCreateOrder.fulfilled, (state, action) => {
-      state.loading = false;
-      state.orderInfo = action.payload;
-    });
-    builder.addCase(fetchCreateOrder.rejected, (state, action) => {
-      state.loading = false;
-      state.err = action.error.message;
-    });
+    builder.addMatcher(
+      isAnyOf(fetchCreateOrder.pending, fetchGetOrders.pending),
+      (state) => {
+        state.loading = true;
+      }
+    );
+    builder.addMatcher(
+      isAnyOf(fetchCreateOrder.fulfilled, fetchGetOrders.fulfilled),
+      (state, action) => {
+        state.loading = false;
+        state.orderInfo = action.payload;
+      }
+    );
+    builder.addMatcher(
+      isAnyOf(fetchCreateOrder.rejected, fetchGetOrders.rejected),
+      (state, action) => {
+        state.loading = false;
+        state.err = action.error.message;
+      }
+    );
   },
 });
 

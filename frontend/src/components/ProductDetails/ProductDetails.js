@@ -134,13 +134,6 @@ const ProductDetails = () => {
                   {product.description}
                 </p>
               </div>
-              <button
-                type="button"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 
-                    font-medium rounded-lg text-sm my-5 p-3"
-              >
-                Submit a Review
-              </button>
             </div>
           </div>
 

@@ -24,6 +24,7 @@ import Contact from "./components/Contact/Contact";
 import Payment from "./components/Checkout/Payment";
 import OrderCompleted from "./components/Checkout/OrderCompleted";
 import Orders from "./components/Orders/Orders";
+import Reviews from "./components/Orders/Reviews";
 
 function App() {
   const dispatch = useDispatch();
@@ -215,6 +216,16 @@ function App() {
             <>
               <NavBar />
               <Orders />
+              <Footer />
+            </>
+          }
+        />{" "}
+        <Route
+          path="/orderReview/:productId"
+          element={
+            <>
+              <NavBar />
+              <Reviews />
               <Footer />
             </>
           }

@@ -115,7 +115,7 @@ const Orders = () => {
                             >
                               <Link
                                 target="_blank"
-                                to={`/product/${singleItem.product}`}
+                                to={`/orderReview/${singleItem.product}`}
                               >
                                 Write a Review
                               </Link>{" "}

@@ -25,6 +25,7 @@ import Payment from "./components/Checkout/Payment";
 import OrderCompleted from "./components/Checkout/OrderCompleted";
 import Orders from "./components/Orders/Orders";
 import Reviews from "./components/Orders/Reviews";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -226,6 +227,16 @@ function App() {
             <>
               <NavBar />
               <Reviews />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <>
+              <NavBar />
+              <Dashboard />
               <Footer />
             </>
           }

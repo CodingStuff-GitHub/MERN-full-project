@@ -140,19 +140,19 @@ export const getAllReviews = AsyncPromiseError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     reviews: product.reviews,
-    product,
   });
 });
 
 //Delete a review
 export const deleteReview = AsyncPromiseError(async (req, res, next) => {
   const product = await Product.findById(req.query.productId);
+  console.log(req.user);
   if (!product) {
     return next(new ErrorHandler("Product Not Found", 404));
   }
   let deletedReview = null;
   const reviews = product.reviews.filter((review) => {
-    if (review._id.toString() !== req.query.reviewId.toString()) {
+    if (review.user.toString() !== req.user._id.toString()) {
       console.log("First Run");
       return review;
     } else {
@@ -166,8 +166,8 @@ export const deleteReview = AsyncPromiseError(async (req, res, next) => {
     deletedReview.rating / (product.numOfReviews - 1);
   product.numOfReviews -= 1;
 
-  await Product.findOneAndUpdate(
-    req.query.id,
+  await Product.findByIdAndUpdate(
+    req.query.productId,
     { rating, reviews },
     { new: true, runValidators: true }
   );

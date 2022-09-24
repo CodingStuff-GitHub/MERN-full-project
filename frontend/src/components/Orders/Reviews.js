@@ -15,7 +15,7 @@ const Reviews = () => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const { product } = useSelector((state) => state.singleProductStore);
-  const { loading, review } = useSelector((state) => state.reviewStore);
+  const { review } = useSelector((state) => state.reviewStore);
 
   useEffect(() => {
     dispatch(clearReviewStore());

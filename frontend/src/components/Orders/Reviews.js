@@ -3,16 +3,35 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ProductCard from "../Home/ProductCard";
 import { fetchSingleProduct } from "../../state_management/product/singleProductSlice";
-import { Typography, Rating } from "@mui/material";
+import { Rating } from "@mui/material";
+import {
+  clearReviewStore,
+  fetchCreateReview,
+} from "../../state_management/review/reviewSlice";
 
 const Reviews = () => {
   const { productId } = useParams();
   const dispatch = useDispatch();
-  const [ratings, setRatings] = useState(0);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
   const { product } = useSelector((state) => state.singleProductStore);
+  const { loading, review } = useSelector((state) => state.reviewStore);
+
   useEffect(() => {
+    dispatch(clearReviewStore());
     dispatch(fetchSingleProduct(productId));
   }, [dispatch, productId]);
+
+  const handleSubmit = () => {
+    const reviewData = {
+      productid: productId,
+      rating,
+      comment,
+    };
+    dispatch(fetchCreateReview(reviewData)).then(() =>
+      dispatch(fetchSingleProduct(productId))
+    );
+  };
   return (
     <>
       {product ? (
@@ -32,35 +51,63 @@ const Reviews = () => {
                 </h1>
                 <div className="flex w-full flex-wrap">
                   <div className="w-2/4 max-w-xs">
-                    <Typography component="legend">Ratings : </Typography>
+                    <p className="text-sm font-semibold text-gray-800 mb-2">
+                      Ratings
+                    </p>
                     <Rating
                       name="simple-controlled"
-                      value={ratings}
+                      value={rating}
+                      defaultValue={5}
                       onChange={(_event, newRating) => {
-                        setRatings(newRating || 0);
+                        setRating(newRating || 1);
                       }}
                     />
                   </div>
                 </div>
                 <div className="w-full mt-6">
                   <div className="flex flex-col">
-                    <label
+                    <div
                       className="text-sm font-semibold text-gray-800 mb-2"
                       htmlFor="message"
                     >
                       Comment
-                    </label>
+                    </div>
                     <textarea
-                      placeholder
                       name="message"
                       className="border-gray-300 border mb-4 rounded py-2 text-sm outline-none resize-none px-3 focus:border focus:border-indigo-700"
                       rows={8}
                       id="message"
+                      onChange={(e) => {
+                        setComment(e.target.value);
+                      }}
                       defaultValue={""}
                     />
                   </div>
+                  {review.message ? (
+                    <div
+                      className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                      role="alert"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="flex-shrink-0 inline w-5 h-5 mr-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                      <span className="font-medium">Ratings submitted</span>{" "}
+                      Thank you for giving your review. {review.message}
+                    </div>
+                  ) : null}
+
                   <button
-                    type="submit"
+                    onClick={handleSubmit}
                     className="focus:outline-none bg-blue-700 transition duration-150 ease-in-out hover:bg-blue-600 rounded text-white px-8 py-3 text-sm leading-6"
                   >
                     Submit

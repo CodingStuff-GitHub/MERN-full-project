@@ -5,6 +5,7 @@ import { shippingInfoReducer } from "./checkout/shippingSlice";
 import { orderReducer } from "./order/orderSlice";
 import { productReducer } from "./product/productSlice";
 import { singleProductReducer } from "./product/singleProductSlice";
+import { reviewReducer } from "./review/reviewSlice";
 import { updateReducer } from "./user/updateSlice";
 import { userReducer } from "./user/userSlice";
 
@@ -18,5 +19,6 @@ export const store = configureStore({
     shippingInfoStore: shippingInfoReducer,
     confirmOrderInfoStore: confirmOrderReducer,
     orderStore: orderReducer,
+    reviewStore: reviewReducer,
   },
 });

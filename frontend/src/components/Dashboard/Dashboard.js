@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminOrders from "./AdminOrders";
 import AdminProducts from "./AdminProducts";
 import AdminSummary from "./AdminSummary";
 import AdminUsers from "./AdminUsers";
+import MainLogo from "../../images/logo.svg";
 
 const Dashboard = () => {
   const [summaryOption, setSummaryOption] = useState(false);
@@ -15,7 +16,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="w-full bg-gray-200">
+      <div className="w-full h-screen bg-gray-200">
         <div className="flex flex-col lg:flex-row flex-no-wrap">
           {/* Sidebar starts */}
           <div className="flex flex-row w-full lg:justify-start justify-evenly lg:flex-col lg:relative lg:w-64 lg:h-screen shadow bg-gray-100 py-6">
@@ -81,7 +82,7 @@ const Dashboard = () => {
             </div>
           </div>
           {/* Sidebar ends */}
-          <div className="w-full">
+          <div className="overflow-y-scroll overscroll-auto w-full h-screen">
             <div className="container mx-auto md:w-4/5 w-11/12 px-6">
               {summaryOption ? <AdminSummary /> : null}
               {usersOption ? <AdminUsers /> : null}

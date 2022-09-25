@@ -1,124 +1,86 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGetOrders } from "../../state_management/order/orderSlice";
+import { fetchGetAdminOrders } from "../../state_management/admin/adminOrders/adminOrdersSlice";
 import Loader from "../layout/Loader/Loader";
-import { Link } from "react-router-dom";
 
 const AdminOrders = () => {
   const dispatch = useDispatch();
-  const { loading, orderInfo } = useSelector((state) => state.orderStore);
+  const { loading, orderInfo } = useSelector((state) => state.orderAdminStore);
   useEffect(() => {
-    dispatch(fetchGetOrders());
+    dispatch(fetchGetAdminOrders());
   }, [dispatch]);
 
   return (
     <>
       {loading ? <Loader /> : null}
       {!loading && orderInfo.orders ? (
-        <div className="px-4 py-12">
-          {/* Desktop Responsive Start */}
-          <div className="flex flex-col justify-start items-start">
-            {orderInfo.orders &&
-              orderInfo.orders.map((order) => (
-                <div key={order._id} className="w-full mt-8">
-                  <div className="flex flex-col md:flex-row w-full h-full text-left py-6 bg-gray-50 border-gray-200 border-b">
-                    <div className="text-base font-medium leading-4 text-gray-600 pl-6 md:pl-0 2xl:pl-20 lg:pl-10 pt-6">
-                      <p className="pb-1 text-gray-800">Order ID</p>
-                      <p className="pb-1 text-gray-600">#{order._id}</p>
-                    </div>
-                    <div className="text-base font-medium leading-4 text-gray-600 pl-6 lg:pl-20 2xl:pl-52 pt-6">
-                      <p className="pb-1 text-gray-800">Total</p>
-                      <p className="pb-1 text-gray-600">₹{order.totalPrice}</p>
-                    </div>
-                    <div className="text-base font-medium leading-4 text-gray-600 pl-6 lg:pl-20 2xl:pl-52 pt-6">
-                      <p className="pb-1 text-gray-800">Date of Order Placed</p>
-                      <p className="pb-1 text-gray-600">
-                        {new Date(order.paidAt).toLocaleDateString("en-GB")}
-                      </p>
-                    </div>
-                    <div className="text-base font-medium leading-4 text-gray-600 pl-6 lg:pl-20 2xl:pl-52 pt-6">
-                      <p className="pb-1 text-gray-800">Status</p>
-                      <p className="pb-1 text-gray-600">
-                        {order.orderStatus === "Processing" && (
-                          <span className="bg-yellow-100 text-yellow-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">
-                            {order.orderStatus}
-                          </span>
-                        )}
-                        {order.orderStatus === "Shipped" && (
-                          <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
-                            {order.orderStatus}
-                          </span>
-                        )}
-                        {order.orderStatus === "Delivered" && (
-                          <span className="bg-green-100 text-green-800 text-sm font-medium mr-2 px-1 py-0.5 rounded dark:bg-green-200 dark:text-green-900">
-                            {order.orderStatus}
-                          </span>
-                        )}
-                        {order.orderStatus === "Not Delivered" && (
-                          <span className="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">
-                            {order.orderStatus}
-                          </span>
-                        )}
-                      </p>
-                    </div>
-                    <div className="text-base font-medium leading-4 text-gray-600 pl-6 2xl:pl-28 2xl:pr-20 pr-4 lg:pr-10"></div>
+        <div>
+          {orderInfo.orders &&
+            orderInfo.orders.map((order) => (
+              <div key={order._id} className="w-full mt-8">
+                <div className="flex flex-col justify-evenly lg:flex-row  w-full h-full p-6 text-left text-gray-600 bg-gray-50 border-gray-200 border-b">
+                  <div className="text-base font-medium leading-4 ">
+                    <p className="pb-1 text-gray-800">Order ID</p>
+                    <p className="pb-1 text-gray-600">#{order._id}</p>
                   </div>
-                  <div className="w-full text-left">
-                    {order.orderItems.map((singleItem) => (
-                      <div
-                        key={singleItem.name}
-                        className="flex flex-col md:flex-row border-gray-200 border-b"
-                      >
-                        <div className="my-5 text-base font-medium leading-4 text-gray-600 2xl:pl-20 pl-4 lg:pl-10">
-                          <img
-                            className="leading-4 aspect-square h-48 w-48"
-                            src={singleItem.image}
-                            alt={singleItem.name}
-                          />
-                        </div>
-                        <div className="my-5 text-base font-medium leading-4 text-gray-600 pl-6 lg:pl-20 2xl:pl-52">
-                          <span className=" text-base leading-4 text-gray-800">
-                            {singleItem.name}
-                          </span>
-                        </div>
-                        <div className="my-5  pl-6 lg:pl-20 2xl:pl-52">
-                          <p>
-                            ₹{singleItem.price} X {singleItem.quantity}
-                          </p>
-                          <p> = ₹{singleItem.price * singleItem.quantity}</p>
-                        </div>
-                        <div className="my-5 text-base font-medium leading-4 text-gray-600 pl-6 lg:pl-20 2xl:pl-52">
-                          <button
-                            type="button"
-                            className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                          >
-                            <Link
-                              target="_blank"
-                              to={`/product/${singleItem.product}`}
-                            >
-                              View details
-                            </Link>{" "}
-                          </button>
-                          <button
-                            type="button"
-                            className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                          >
-                            <Link
-                              target="_blank"
-                              to={`/orderReview/${singleItem.product}`}
-                            >
-                              Write a Review
-                            </Link>{" "}
-                          </button>
-                        </div>
-                        <div className="my-5 pl-4 lg:pl-12  2xl:pl-28 pr-4 2xl:pr-20"></div>
-                      </div>
-                    ))}
+                  <div className="text-base font-medium leading-4 ">
+                    <p className="pb-1 text-gray-800">Total</p>
+                    <p className="pb-1 text-gray-600">₹{order.totalPrice}</p>
+                  </div>
+                  <div className="text-base font-medium leading-4 ">
+                    <p className="pb-1 text-gray-800">Date of Order Placed</p>
+                    <p className="pb-1 text-gray-600">
+                      {new Date(order.paidAt).toLocaleDateString("en-GB")}
+                    </p>
+                  </div>
+                  <div className="text-base font-medium leading-4 ">
+                    <p className="pb-1 text-gray-800">Status</p>
+                    <p className="pb-1 text-gray-600">
+                      {order.orderStatus === "Processing" && (
+                        <span className="bg-yellow-100 text-yellow-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">
+                          {order.orderStatus}
+                        </span>
+                      )}
+                      {order.orderStatus === "Shipped" && (
+                        <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
+                          {order.orderStatus}
+                        </span>
+                      )}
+                      {order.orderStatus === "Delivered" && (
+                        <span className="bg-green-100 text-green-800 text-sm font-medium mr-2 px-1 py-0.5 rounded dark:bg-green-200 dark:text-green-900">
+                          {order.orderStatus}
+                        </span>
+                      )}
+                      {order.orderStatus === "Not Delivered" && (
+                        <span className="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">
+                          {order.orderStatus}
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
-              ))}
-          </div>
-          {/* Desktop Responsive End */}
+                <div className="my-5 mx-8 text-left p-2">
+                  {order.orderItems.map((singleItem, index) => (
+                    <div
+                      key={singleItem.name}
+                      className="grid grid-cols-3 lg:grid-rows-3 justify-start md:flex-row border-gray-200 border-b"
+                    >
+                      <div className="text-base font-medium leading-4">
+                        <span className="text-gray-800">
+                          {index + 1}. {singleItem.name}
+                        </span>
+                      </div>
+                      <div className="pl-6 text-base font-medium leading-4 text-gray-600">
+                        <span>
+                          ₹{singleItem.price} X {singleItem.quantity}= ₹
+                          {singleItem.price * singleItem.quantity}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
         </div>
       ) : null}
     </>

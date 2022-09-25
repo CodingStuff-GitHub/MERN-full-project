@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { orderAdminReducer } from "./admin/adminOrders/adminOrdersSlice";
 import { addToCartReducer } from "./cart/addToCartSlice";
 import { confirmOrderReducer } from "./checkout/confirmOrderSlice";
 import { shippingInfoReducer } from "./checkout/shippingSlice";
@@ -20,5 +21,6 @@ export const store = configureStore({
     confirmOrderInfoStore: confirmOrderReducer,
     orderStore: orderReducer,
     reviewStore: reviewReducer,
+    orderAdminStore: orderAdminReducer,
   },
 });

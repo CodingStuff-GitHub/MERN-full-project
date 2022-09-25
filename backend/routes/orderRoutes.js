@@ -5,6 +5,7 @@ import {
   getLoggedUserOrders,
   updateOrder,
   deleteOrder,
+  getAllOrders,
 } from "../controllers/orderController.js";
 
 export const router = express.Router();
@@ -32,3 +33,8 @@ router
 router
   .route("/admin/order/:id")
   .delete(isAuthenticated, AuthorizedRoles("admin"), deleteOrder);
+
+// Obtain orders for all user.
+router
+  .route("/admin/orders")
+  .get(isAuthenticated, AuthorizedRoles("admin"), getAllOrders);

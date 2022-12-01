@@ -10,8 +10,10 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-dotenv.config({ path: "backend/config/config.env" });
-
+// Since we dont need this file in production
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config({ path: "backend/config/config.env" });
+}
 connectDatabase();
 
 //Add Cloudinary configuration
